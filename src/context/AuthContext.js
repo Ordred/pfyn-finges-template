@@ -10,6 +10,7 @@ export const useAuth = () => useContext(AuthContext);
 
 // Render a context provider
 export const AuthProvider = ({ children }) => {
+  // Authenticated & admin state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -21,16 +22,21 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(!!user);
 
         if (firebase.auth().currentUser) {
+          // Get the ID token which contains the "custom claims" to know about the admin status of the user
           let idTokenResult = await firebase
             .auth()
             .currentUser.getIdTokenResult(true);
+
+          // Set admin status based on "admin" custom claim
           setIsAdmin(!!idTokenResult.claims.admin);
         }
       });
 
-    return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
+    // Make sure we un-register Firebase observers when the component unmounts.
+    return () => unregisterAuthObserver();
   }, []);
 
+  // Render the context provider and provide the "isAuthenticated" & "isAdmin" values
   return (
     <AuthContext.Provider value={{ isAuthenticated, isAdmin }}>
       {children}

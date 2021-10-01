@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
+import {Route} from "react-router-dom";
 
 // Get the DB object from the firebase app
 const db = firebase.firestore();
@@ -84,22 +85,24 @@ function App() {
   // Normal rendering of the app for authenticated users
   return (
     <div className="App">
-      <MapContainer
-          center={[40.7317535212683, -73.99685430908403]}
-          zoom={9}
-          scrollWheelZoom={true}
-          style={{height:'500px', width: '500px'}}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      </MapContainer>
-      <h1>Welcome to the Pfyn-Finges Forest!</h1>
+      <Route exact path="/">
+        <MapContainer
+            center={[40.7317535212683, -73.99685430908403]}
+            zoom={9}
+            scrollWheelZoom={true}
+            style={{height:'500px', width: '500px'}}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        </MapContainer>
+        <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
-      {/* Show role based on admin status (from custom claim) */}
-      <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
+        {/* Show role based on admin status (from custom claim) */}
+        <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
 
-      {/* Render the collection of POIs from the DB */}
-      <h4>POIs Collection</h4>
-      <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
+        {/* Render the collection of POIs from the DB */}
+        <h4>POIs Collection</h4>
+        <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
+      </Route>
 
       {/* Render buttons to add/remove data & log out */}
       <div style={{ display: "flex" }}>

@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {Route} from "react-router-dom";
+import LinkButton from "./LinkButton";
 
 // Get the DB object from the firebase app
 const db = firebase.firestore();
@@ -114,6 +115,7 @@ function App() {
           </>
         )}
         <button onClick={signOut}>Logout</button>
+        <LinkButton to="/code/generation">Generate QR code</LinkButton>
       </div>
     </div>
   );

@@ -5,6 +5,9 @@ import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
 import SignIn from "./pages/SignIn";
 import { useEffect, useState } from "react";
+import 'leaflet/dist/leaflet.css'
+import React from 'react'
+import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 
 // Get the DB object from the firebase app
 const db = firebase.firestore();
@@ -81,6 +84,14 @@ function App() {
   // Normal rendering of the app for authenticated users
   return (
     <div className="App">
+      <MapContainer
+          center={[40.7317535212683, -73.99685430908403]}
+          zoom={9}
+          scrollWheelZoom={true}
+          style={{height:'500px', width: '500px'}}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      </MapContainer>
       <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
       {/* Show role based on admin status (from custom claim) */}

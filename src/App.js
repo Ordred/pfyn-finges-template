@@ -8,15 +8,25 @@ import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
-import {Route} from "react-router-dom";
-import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
-import LinkButton from "./LinkButton";
+import {MapComponent} from "./Map";
 
 // Get the DB object from the firebase app
 const db = firebase.firestore();
 
 // EXAMPLE : Reference to a collection of POIs
 const COLLECTION_POIS = "pois";
+const COLLECTION_POIS2 = "pois2";
+
+
+
+const POIS = [
+  {lat: 46.3021, lng: 7.6261},{lat: 46.3021, lng: 7.6371}
+];
+
+const POIS2 = [
+  [46.3021, 7.6261],[46.3021, 7.6371],
+];
+
 
 function App() {
   // Get authenticated state using the custom "auth" hook
@@ -87,28 +97,17 @@ function App() {
   // Normal rendering of the app for authenticated users
   return (
     <div className="App">
-      <Route exact path="/">
-        <MapContainer
-            center={[40.7317535212683, -73.99685430908403]}
-            zoom={9}
-            scrollWheelZoom={true}
-            style={{height:'500px', width: '500px'}}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        </MapContainer>
-        <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
-        {/* Show role based on admin status (from custom claim) */}
-        <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
+      <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
-        {/* Render the collection of POIs from the DB */}
-        <h4>POIs Collection</h4>
-        <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
-      </Route>
+      <MapComponent pois={POIS} pois2={POIS2} />
 
-      <Route exact path="/code/generation">
-        <QrCodeGenerationPage/>
-      </Route>
+      {/* Show role based on admin status (from custom claim) */}
+      <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
+
+      {/* Render the collection of POIs from the DB */}
+      <h4>POIs Collection</h4>
+      <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
 
       {/* Render buttons to add/remove data & log out */}
       <div style={{ display: "flex" }}>
@@ -120,7 +119,6 @@ function App() {
           </>
         )}
         <button onClick={signOut}>Logout</button>
-        <LinkButton to="/code/generation">Generate QR code</LinkButton>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {Route} from "react-router-dom";
+import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 import LinkButton from "./LinkButton";
 
 // Get the DB object from the firebase app
@@ -103,6 +104,10 @@ function App() {
         {/* Render the collection of POIs from the DB */}
         <h4>POIs Collection</h4>
         <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
+      </Route>
+
+      <Route exact path="/code/generation">
+        <QrCodeGenerationPage/>
       </Route>
 
       {/* Render buttons to add/remove data & log out */}

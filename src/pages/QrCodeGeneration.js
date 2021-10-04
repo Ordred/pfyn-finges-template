@@ -59,7 +59,5 @@ function QrCode(props){
         }
     });
 
-    return (
-        <>{props.url && <img ref={qrcoderef} alt={"QR code for link " + props.url}/>}</>
-    )
+    return props.url && <img ref={qrcoderef} alt={"QR code for link " + props.url}/>
 }

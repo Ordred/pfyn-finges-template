@@ -9,12 +9,13 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {MapComponent} from "./Map";
+import {SetPOIS} from "./SetPOIS";
 
 // Get the DB object from the firebase app
-const db = firebase.firestore();
+export const db = firebase.firestore();
 
 // EXAMPLE : Reference to a collection of POIs
-const COLLECTION_POIS = "pois";
+export const COLLECTION_POIS = "pois";
 const COLLECTION_POIS2 = "pois2";
 
 
@@ -99,7 +100,7 @@ function App() {
     <div className="App">
 
       <h1>Welcome to the Pfyn-Finges Forest!</h1>
-
+      <SetPOIS setPOIs={setPoisCollection}/>
       <MapComponent pois={POIS} pois2={POIS2} />
 
       {/* Show role based on admin status (from custom claim) */}

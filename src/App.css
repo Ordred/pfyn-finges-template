@@ -13,3 +13,8 @@
 .App-link {
   color: #61dafb;
 }
+
+
+.ul-no-bullets {
+  list-style-type: none;
+}

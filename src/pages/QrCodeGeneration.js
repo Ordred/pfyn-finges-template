@@ -1,25 +1,45 @@
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useQRCode} from "react-qrcodes";
 
+import {firebase} from '../initFirebase';
+
+const database = firebase.firestore();
+
 export function QrCodeGenerationPage() {
-    function handleUrlChange(e){
-        setEnteredUrl(e.target.value)
+    function handlePoiButtonClick(e){
+        setCurrentPoiCode(e.target.dataset.poi)
     }
 
-    const [enteredUrl, setEnteredUrl] = useState("");
+    const [poisCollection, setPoiCollection] = useState(null);
+    const [currentPoiCode, setCurrentPoiCode] = useState(null);
 
-    // Use effect to load the POIs
+    useEffect(() => {
+        // TODO: Refactor this into its own hook ?
+        const collection = database.collection("pois");
+        const unsubscribe = collection.onSnapshot(snap => {
+            setPoiCollection(
+                snap.docs.map(
+                    doc => ({id: doc.id, ...doc.data()})
+                )
+            )
+        }, console.error);
+
+        return () => unsubscribe();
+    }, [])
 
     return (
         <>
             <p>QRCode generation page</p>
-            <p>
-                <input type="url" onChange={handleUrlChange} value={enteredUrl}/>
-            </p>
-            <p>
-                { enteredUrl && <QrCode url={enteredUrl}/> }
-            </p>
+            <ul className="ul-no-bullets">
+                { poisCollection &&
+                    poisCollection.map(poi => {
+                        return <li key={poi.id}><button onClick={handlePoiButtonClick} data-poi={poi.id}>{poi.name}</button></li>
+                    })
+                }
+            </ul>
+
+            { currentPoiCode && <QrCode url={"http://localhost:3000/code/" + currentPoiCode }/>}
         </>
     )
 }

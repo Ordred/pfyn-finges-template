@@ -9,6 +9,9 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {MapComponent} from "./Map";
+import {Route} from 'react-router-dom'
+import LinkButton from "./LinkButton";
+import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 
 // Get the DB object from the firebase app
 const db = firebase.firestore();
@@ -100,22 +103,31 @@ function App() {
 
       <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
-      <MapComponent pois={POIS} pois2={POIS2} />
+      <Route path="/" exact>
+          <MapComponent pois={POIS} pois2={POIS2} />
 
-      {/* Show role based on admin status (from custom claim) */}
-      <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
+          {/* Show role based on admin status (from custom claim) */}
+          <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
 
-      {/* Render the collection of POIs from the DB */}
-      <h4>POIs Collection</h4>
-      <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
+          {/* Render the collection of POIs from the DB */}
+          <h4>POIs Collection</h4>
+          <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
+      </Route>
+
+      <Route path="/code/generation">
+        <QrCodeGenerationPage/>
+      </Route>
 
       {/* Render buttons to add/remove data & log out */}
       <div style={{ display: "flex" }}>
         {/* Admin-only tasks */}
         {isAdmin && (
           <>
-            <button onClick={addDummyData}>Add Dummy Data</button>
-            <button onClick={cleanDB}>Clean DB</button>
+            <Route path="/" exact>
+              <button onClick={addDummyData}>Add Dummy Data</button>
+              <button onClick={cleanDB}>Clean DB</button>
+              <LinkButton to="/code/generation">Generate a QR code</LinkButton>
+            </Route>
           </>
         )}
         <button onClick={signOut}>Logout</button>

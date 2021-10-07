@@ -1,8 +1,7 @@
-
 import {useEffect, useState} from "react";
-import {useQRCode} from "react-qrcodes";
 
 import {firebase} from '../initFirebase';
+import {QrCode} from "../components/QrCode";
 
 const database = firebase.firestore();
 
@@ -42,22 +41,4 @@ export function QrCodeGenerationPage() {
             { currentPoiCode && <QrCode url={"http://localhost:3000/code/" + currentPoiCode }/>}
         </>
     )
-}
-
-function QrCode(props){
-    let [qrcoderef] = useQRCode({
-        text: props.url,
-        options: {
-            level: 'H',
-            margin: 5,
-            scale: 4,
-            width: 250,
-            color: {
-                light: "#ffffffff",
-                dark: "#000000ff"
-            }
-        }
-    });
-
-    return props.url && <img ref={qrcoderef} alt={"QR code for link " + props.url}/>
 }

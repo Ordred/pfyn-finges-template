@@ -4,17 +4,16 @@ import 'leaflet/dist/leaflet.css'
 import React, {useEffect, useState} from 'react'
 import {db, COLLECTION_POIS} from "./App";
 
-const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
+const EMPTY_POI = {name: '', description: '', position: '', url: ''}
 
 export function SetPOIS(props) {
 
 
     let [newPOI, setNewPOI] = useState(EMPTY_POI)
 
-
-
     const addPOI = async (event) => {
         event.preventDefault();
+        COLLECTION_POIS.position = props.position;
         const poisCollection = await db.collection(COLLECTION_POIS);
 
         try {
@@ -62,7 +61,7 @@ export function SetPOIS(props) {
                 value={newPOI.description}
                 onChange={handleFormInputChange}
             />
-            <input
+            {/*<input
                 type="number"
                 id="latitude"
                 name="latitude"
@@ -77,7 +76,7 @@ export function SetPOIS(props) {
                 placeholder="Longitude"
                 value={newPOI.longitude}
                 onChange={handleFormInputChange}
-            />
+            />*/}
             <input
                 type="text"
                 id="url"

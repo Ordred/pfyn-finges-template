@@ -36,6 +36,9 @@ function App() {
   // EXAMPLE : Store an entire collection of POIs in the state
   const [poisCollection, setPoisCollection] = useState(null);
 
+
+  const [position, setPosition] = useState({lat: 46.3021, lng: 7.6261});
+
   useEffect(() => {
     // EXAMPLE : Fetch POIs of your DB
     const poisCollection = db.collection(COLLECTION_POIS);
@@ -100,8 +103,8 @@ function App() {
     <div className="App">
 
       <h1>Welcome to the Pfyn-Finges Forest!</h1>
-      <SetPOIS setPOIs={setPoisCollection}/>
-      <MapComponent pois={POIS} pois2={POIS2} />
+      <SetPOIS setPOIs={setPoisCollection} position={position}/>
+      <MapComponent pois={POIS} pois2={POIS2}  setPositon={setPosition} position={position}/>
 
       {/* Show role based on admin status (from custom claim) */}
       <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>

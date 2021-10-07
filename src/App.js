@@ -12,6 +12,7 @@ import {MapComponent} from "./Map";
 import {Route} from 'react-router-dom'
 import LinkButton from "./components/LinkButton";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
+import {CodeActivationPage} from "./pages/CodeActivationPage";
 
 // Get the DB object from the firebase app
 const db = firebase.firestore();
@@ -113,6 +114,8 @@ function App() {
           <h4>POIs Collection</h4>
           <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
       </Route>
+
+        <Route path="/code/:code" component={CodeActivationPage}/>
 
       <Route path="/code/generation">
         <QrCodeGenerationPage/>

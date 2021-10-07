@@ -10,7 +10,7 @@ import React from 'react'
 import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {MapComponent} from "./Map";
 import {Route} from 'react-router-dom'
-import LinkButton from "./LinkButton";
+import LinkButton from "./components/LinkButton";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 
 // Get the DB object from the firebase app

@@ -12,7 +12,26 @@ const uiConfig = {
   ],
   callbacks: {
     // Avoid redirects after sign-in.
-    signInSuccessWithAuthResult: () => false,
+    signInSuccessWithAuthResult: ({user}) => {
+
+
+      async function createUserData() {
+        let db = firebase.firestore();
+        let users = db.collection('users');
+        let userDocumentRef = users.doc(user.uid);
+        let userDocument = await userDocumentRef.get();
+
+        if (!userDocument.exists) {
+          await userDocumentRef.set({discovered: [], gpx_files: []});
+
+        }
+
+      }
+
+      createUserData();
+
+      return false;
+    },
   },
 };
 

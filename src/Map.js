@@ -1,4 +1,4 @@
-import {MapContainer, Marker, Polyline, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Polyline, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import {useState} from "react";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from 'leaflet'
@@ -6,28 +6,39 @@ import {Icon} from 'leaflet'
 export function MapComponent(props) {
 
     let [bounds, setBounds] = useState();
-
-    const handleClick = (e) => {
-        props.setPosition(e.latlng);
-    }
+    let [POIS, setPOIS] = useState([{lat: '', lng: ''}, {lat: '', lng: ''}])
 
     return <MapContainer
         center={[46.3021, 7.6261]}
         zoom={14.5}
         scrollWheelZoom={true}
         style={{height:'720px', width: '1280px'}}
-        onClick={handleClick}
     >
         <TileLayer url="https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg" />
-        {props.pois.map((coordinate) => <POI position={coordinate}/>)}
+        {props.poisCollection != null && props.poisCollection.map((coordinate) => <POI key={coordinate.id} POI={coordinate}/>)}
         <Polyline pathOptions={{ fillColor: 'red', color: 'blue' }} positions={props.pois2}/>
         <Popup position={props.position}>
         </Popup>
+        <MarkerCreation setPosition={props.setPosition}/>
     </MapContainer>
 }
 
 function POI(props) {
 
-        return <Marker position={props.position} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
+    let tempLat = +props.POI.latitude;
+    let tempLng = +props.POI.longitude;
+
+    console.error(tempLat);
+    return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
+}
+
+function MarkerCreation(props) {
+    const map = useMapEvents({
+        click: (e) => {
+            console.log("latlng is :", e.latlng)
+            props.setPosition(e.latlng)
+        }
+    })
+    return null;
 }
 

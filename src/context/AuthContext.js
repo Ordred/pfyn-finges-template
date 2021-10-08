@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { firebase } from "../initFirebase";
+import {COLLECTION_USERS, db} from "../App";
 
 // React Context variable
 const AuthContext = React.createContext(null);

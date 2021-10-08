@@ -4,20 +4,18 @@ import 'leaflet/dist/leaflet.css'
 import React, {useEffect, useState} from 'react'
 import {db, COLLECTION_POIS} from "./App";
 
-const EMPTY_POI = {name: '', description: '', position: '', url: ''}
+const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
 
 export function SetPOIS(props) {
-
 
     let [newPOI, setNewPOI] = useState(EMPTY_POI)
 
     const addPOI = async (event) => {
         event.preventDefault();
-        COLLECTION_POIS.position = props.position;
         const poisCollection = await db.collection(COLLECTION_POIS);
 
         try {
-            await poisCollection.add(newPOI);
+            await poisCollection.add({...newPOI, latitude: props.position.lat, longitude: props.position.lng});
         } catch (e) {
             console.error("Could not add new POI");
             console.error(e.stack)

@@ -1,10 +1,10 @@
 import "./App.css";
+import 'leaflet/dist/leaflet.css'
 
 import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
 import SignIn from "./pages/SignIn";
 import { useEffect, useState } from "react";
-import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import {MapComponent} from "./Map";
 import {SetPOIS} from "./SetPOIS";

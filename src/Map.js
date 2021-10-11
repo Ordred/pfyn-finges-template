@@ -17,11 +17,12 @@ export function MapComponent(props) {
         style={{height:'720px', width: '1280px'}}
     >
         <TileLayer url="https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg" />
-        {props.poisCollection != null && props.poisCollection.map((coordinate) => <POI key={coordinate.id} POI={coordinate}/>)}
-        {props.wayPoints != null && props.wayPoints.map((way) => <WAYS way={way}/>)}
-        <Popup position={props.position}>
-        </Popup>
-        <MarkerCreation setPosition={props.setPosition}/>
+        {/*{props.poisCollection != null && props.poisCollection.map((coordinate) => <POI key={coordinate.id} POI={coordinate}/>)}*/}
+        {/*{props.wayPoints != null && props.wayPoints.map((way) => <WAYS way={way}/>)}*/}
+        {/*<Popup position={props.position}>*/}
+        {/*</Popup>*/}
+        <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={props.line}/>
+        {/*<MarkerCreation setPosition={props.setPosition}/>*/}
     </MapContainer>
 }
 

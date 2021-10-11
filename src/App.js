@@ -32,6 +32,25 @@ const POIS2 = [
 
 
 function App() {
+    let storage = firebase.storage();
+    let ref = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
+    let [coordinates, setCoordinates] = useState(0)
+
+    useEffect(() => {
+
+        ref.getDownloadURL()
+            .then(url => fetch(url, {mode: "cors"}))
+            .then(response => response.text())
+            .then(response_content => {
+                let parser = new DOMParser();
+                let parsed_doc = parser.parseFromString(response_content, "application/xml");
+                let nodes = [...parsed_doc.querySelectorAll("trkpt")];
+                let coords = nodes.map(node => [node.attributes.lat.value, node.attributes.lon.value])
+                setCoordinates(coords);
+            })
+            .catch(error => console.error(error)
+            );
+    }, []);
     // Get authenticated state using the custom "auth" hook
     const { isAuthenticated, isAdmin } = useAuth();
 
@@ -130,7 +149,8 @@ function App() {
 
             <h1>Welcome to the Pfyn-Finges Forest!</h1>
             <SetPOIS setPOIs={setPoisCollection} position={position}/>
-            <MapComponent pois={POIS} wayPoints={POIS2} poisCollection={poisCollection}  setPosition={setPosition} position={position}/>
+            {/*<MapComponent pois={POIS} wayPoints={POIS2} poisCollection={poisCollection}  setPosition={setPosition} position={position}/>*/}
+            <MapComponent line={coordinates}/>
 
             {/* Show role based on admin status (from custom claim) */}
             <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>

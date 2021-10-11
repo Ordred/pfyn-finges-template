@@ -25,12 +25,12 @@ export const COLLECTION_USERS = "users";
 
 function App() {
     let storage = firebase.storage();
-    let ref = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
+    let referenceToGPXFile = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
     let [coordinates, setCoordinates] = useState(0)
 
     useEffect(() => {
 
-        ref.getDownloadURL()
+        referenceToGPXFile.getDownloadURL()
             .then(url => fetch(url, {mode: "cors"}))
             .then(response => response.text())
             .then(response_content => {
@@ -42,7 +42,7 @@ function App() {
             })
             .catch(error => console.error(error)
             );
-    }, []);
+    }, [referenceToGPXFile]);
 
     // Get authenticated state using the custom "auth" hook
     const { isAuthenticated, isAdmin } = useAuth();

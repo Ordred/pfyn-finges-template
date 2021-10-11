@@ -1,7 +1,7 @@
 import "./App.css";
 
 import 'leaflet/dist/leaflet.css'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {db, COLLECTION_POIS} from "./App";
 
 const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
@@ -84,31 +84,9 @@ export function SetPOIS(props) {
                 onChange={handleFormInputChange}
             />
             <button type="submit">Add POI</button>
-        </form>)
-
-    {/*{/!* Render a list of Book components, with no bullet points *!/}
-                <ul style={{ listStyleType: 'none', padding: 0 }}>
-                    {/!* The "map" function iterates over the array of books *!/}
-                    {/!* and returns a list item with a Book component for   *!/}
-                    {/!* each book in the books array.                       *!/}
-                    {/!* The books now come from the state                   *!/}
-                    {this.state.books.map((book, index) => (
-                        /!*
-                        The key of the list item is currently just the index of
-                        the book in the array (0, 1, 2,...), as we do not have
-                        a unique ID for each book available so far.
-                         *!/
-                        <li key={index}>
-                            {/!* The object spread syntax is used here in order to   *!/}
-                            {/!* map the properties of each book object to the props *!/}
-                            {/!* of the Book component directly.                     *!/}
-                            <Book {...book} />
-                        </li>
-                    ))}
-                </ul>*/
-
-
-    }}
+        </form>
+    )
+}
 
 
 

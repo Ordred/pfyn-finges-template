@@ -8,12 +8,13 @@ import { useEffect, useState } from "react";
 import React from 'react'
 import {MapComponent} from "./Map";
 import {SetPOIS} from "./SetPOIS";
-import {Switch, Route, Link, Redirect} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
+import LinkButton from "./components/LinkButton";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -72,7 +73,7 @@ function App() {
 
     // EXAMPLE : Add a new document to the DB
     const addDummyData = async () => {
-        // Add a random POI to your group's DB
+        // Add a random PointOfInterest to your group's DB
         const poisCollection = await db.collection(COLLECTION_POIS);
 
         try {
@@ -80,7 +81,7 @@ function App() {
                 name: `POI Test ${Math.floor(Math.random() * 500)}`,
             });
         } catch (e) {
-            console.error("Could not add new POI");
+            console.error("Could not add new PointOfInterest");
         }
     };
 
@@ -117,15 +118,33 @@ function App() {
         <div className="App">
             <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
+            {/* Show role based on admin status (from custom claim) */}
+            <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
+
+            {/* Render buttons to add/remove data & log out */}
+            <div style={{ display: "flex" }}>
+                {/* Admin-only tasks */}
+                {isAdmin && (
+                    <>
+                        <button onClick={addDummyData}>Add Dummy Data</button>
+                        <button onClick={cleanDB}>Clean DB</button>
+                        <LinkButton to="/admin/code/generation">Generate a QR code for a PoI</LinkButton>
+                        <LinkButton to="/admin/poi/add">Create a PoI</LinkButton>
+                    </>
+                )}
+
+                <button onClick={signOut}>Logout</button>
+            </div>
+
             <Switch>
                 <Route path="/admin/code/generation" component={QrCodeGenerationPage}/>
 
                 <Route path="/admin/poi/add">
                     <SetPOIS setPOIs={setPoisCollection} position={position}/>
                     <MapComponent poisCollection={poisCollection}  setPosition={setPosition} position={position}>
-                        {poisCollection != null && poisCollection.map((coordinate) => <POI key={coordinate.id} POI={coordinate}/>)}
+                        {poisCollection != null && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
                         <Popup position={position}/>
-                        <MarkerCreation setPosition={setPosition}/>
+                        <MarkerCreation setPositionCallback={setPosition}/>
                     </MapComponent>
                 </Route>
 
@@ -146,48 +165,29 @@ function App() {
                 </Route>
             </Switch>
 
-
-            {/* Show role based on admin status (from custom claim) */}
-            <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
-
             {/* Render the collection of POIs from the DB */}
             <h4>POIs Collection</h4>
-            <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
+            <code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>
 
-            {/* Render buttons to add/remove data & log out */}
-            <div style={{ display: "flex" }}>
-                {/* Admin-only tasks */}
-                {isAdmin && (
-                    <>
-                        <button onClick={addDummyData}>Add Dummy Data</button>
-                        <button onClick={cleanDB}>Clean DB</button>
-                    </>
-                )}
-                <button onClick={signOut}>Logout</button>
-            </div>
         </div>
     );
 }
 
-function POI(props) {
-
-    let tempLat = +props.POI.latitude;
-    let tempLng = +props.POI.longitude;
+function PointOfInterest(props) {
+    let tempLat = +props.latitude;
+    let tempLng = +props.longitude;
 
     return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
 }
 
-function WAYS(props) {
-    return <Polyline pathOptions={{ fillColor: 'red', color: 'blue' }} positions={props.way}/>
-}
-
 function MarkerCreation(props) {
-    const map = useMapEvents({
+    useMapEvents({
         click: (e) => {
             console.log("latlng is :", e.latlng)
-            props.setPosition(e.latlng)
+            props.setPositionCallback(e.latlng)
         }
-    })
+    });
+
     return null;
 }
 

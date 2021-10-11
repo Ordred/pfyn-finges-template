@@ -11,6 +11,9 @@ import {SetPOIS} from "./SetPOIS";
 import {Switch, Route, Link, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
+import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
+import {Icon} from "leaflet";
+import markerIconPng from "leaflet/dist/images/marker-icon.png"
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -18,14 +21,6 @@ export const db = firebase.firestore();
 // EXAMPLE : Reference to a collection of POIs
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
-
-const POIS = [
-    {lat: 46.3021, lng: 7.6261},{lat: 46.3021, lng: 7.6371}
-];
-
-const POIS2 = [
-    [[46.3021, 7.6261],[46.3021, 7.6371]],[[46.3021, 7.6261],[46.3021, 7.6371]]
-];
 
 function App() {
     let storage = firebase.storage();
@@ -127,7 +122,11 @@ function App() {
 
                 <Route path="/admin/poi/add">
                     <SetPOIS setPOIs={setPoisCollection} position={position}/>
-                    <MapComponent pois={POIS} wayPoints={POIS2} poisCollection={poisCollection}  setPosition={setPosition} position={position}/>
+                    <MapComponent poisCollection={poisCollection}  setPosition={setPosition} position={position}>
+                        {poisCollection != null && poisCollection.map((coordinate) => <POI key={coordinate.id} POI={coordinate}/>)}
+                        <Popup position={position}/>
+                        <MarkerCreation setPosition={setPosition}/>
+                    </MapComponent>
                 </Route>
 
                 <Route path="/code/:code" component={CodeActivationPage}/>
@@ -137,14 +136,15 @@ function App() {
                 </Route>
 
                 <Route path="/map/walk-history">
-                    <MapComponent line={coordinates}/>
+                    <MapComponent>
+                        <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={coordinates}/>
+                    </MapComponent>
                 </Route>
 
                 <Route path="/">
                     {isAuthenticated ? <Redirect to="/map/walk-history"/> : <Redirect to="/login"/>}
                 </Route>
             </Switch>
-
 
 
             {/* Show role based on admin status (from custom claim) */}
@@ -168,5 +168,28 @@ function App() {
         </div>
     );
 }
+
+function POI(props) {
+
+    let tempLat = +props.POI.latitude;
+    let tempLng = +props.POI.longitude;
+
+    return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
+}
+
+function WAYS(props) {
+    return <Polyline pathOptions={{ fillColor: 'red', color: 'blue' }} positions={props.way}/>
+}
+
+function MarkerCreation(props) {
+    const map = useMapEvents({
+        click: (e) => {
+            console.log("latlng is :", e.latlng)
+            props.setPosition(e.latlng)
+        }
+    })
+    return null;
+}
+
 
 export default App;

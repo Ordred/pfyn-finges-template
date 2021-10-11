@@ -1,13 +1,11 @@
 import "./App.css";
 
-import _ from "lodash";
 import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
 import SignIn from "./pages/SignIn";
 import { useEffect, useState } from "react";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
-import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {MapComponent} from "./Map";
 import {SetPOIS} from "./SetPOIS";
 
@@ -16,20 +14,7 @@ export const db = firebase.firestore();
 
 // EXAMPLE : Reference to a collection of POIs
 export const COLLECTION_POIS = "pois";
-const COLLECTION_POIS2 = "pois2";
-
 export const COLLECTION_USERS = "users";
-
-
-
-const POIS = [
-    {lat: 46.3021, lng: 7.6261},{lat: 46.3021, lng: 7.6371}
-];
-
-const POIS2 = [
-    [[46.3021, 7.6261],[46.3021, 7.6371]],[[46.3021, 7.6261],[46.3021, 7.6371]]
-];
-
 
 function App() {
     let storage = firebase.storage();
@@ -51,6 +36,7 @@ function App() {
             .catch(error => console.error(error)
             );
     }, []);
+
     // Get authenticated state using the custom "auth" hook
     const { isAuthenticated, isAdmin } = useAuth();
 
@@ -58,16 +44,11 @@ function App() {
     const [poisCollection, setPoisCollection] = useState(null);
 
     const [uid, setUID] = useState(firebase.auth().currentUser != null && firebase.auth().currentUser.uid);
-
-
     const [position, setPosition] = useState({lat: 46.3021, lng: 7.6261});
-
-
 
     useEffect(() => {
         // EXAMPLE : Fetch POIs of your DB
         const poisCollection = db.collection(COLLECTION_POIS);
-
 
         // Subscribe to DB changes
         const unsubscribe = poisCollection.onSnapshot(
@@ -75,7 +56,6 @@ function App() {
                 // Store the collection of POIs as an array of ID => Data pairs
                 //setPoisCollection(snapshot.docs.map((d) => ({ [d.id]: d.data() })));
                 setPoisCollection(snapshot.docs.map((d) => ({id: d.id, ...d.data()} )));
-
             },
             (error) => console.error(error)
         );
@@ -84,23 +64,6 @@ function App() {
         return () => unsubscribe();
     }, []);
 
-
-    const addUser = async () => {
-        // Add a random POI to your group's DB
-        const userCollection = await db.collection(COLLECTION_USERS);
-
-        try {
-            await userCollection.add({
-                uid: {uid},
-                discovered: ['','']
-            });
-        } catch (e) {
-            console.error("Could not add new User");
-        }
-    }
-
-
-
     // EXAMPLE : Add a new document to the DB
     const addDummyData = async () => {
         // Add a random POI to your group's DB
@@ -108,7 +71,7 @@ function App() {
 
         try {
             await poisCollection.add({
-                name: `POI Test ${_.random(500)}`,
+                name: `POI Test ${Math.floor(Math.random() * 500)}`,
             });
         } catch (e) {
             console.error("Could not add new POI");

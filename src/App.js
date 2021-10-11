@@ -42,7 +42,8 @@ function App() {
             })
             .catch(error => console.error(error)
             );
-    }, [referenceToGPXFile]);
+    // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
+    }, []);
 
     // Get authenticated state using the custom "auth" hook
     const { isAuthenticated, isAdmin } = useAuth();

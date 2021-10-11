@@ -27,7 +27,7 @@ const POIS = [
 ];
 
 const POIS2 = [
-    [46.3021, 7.6261],[46.3021, 7.6371],
+    [[46.3021, 7.6261],[46.3021, 7.6371]],[[46.3021, 7.6261],[46.3021, 7.6371]]
 ];
 
 
@@ -130,7 +130,7 @@ function App() {
 
             <h1>Welcome to the Pfyn-Finges Forest!</h1>
             <SetPOIS setPOIs={setPoisCollection} position={position}/>
-            <MapComponent pois={POIS} pois2={POIS2} poisCollection={poisCollection}  setPosition={setPosition} position={position}/>
+            <MapComponent pois={POIS} wayPoints={POIS2} poisCollection={poisCollection}  setPosition={setPosition} position={position}/>
 
             {/* Show role based on admin status (from custom claim) */}
             <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>

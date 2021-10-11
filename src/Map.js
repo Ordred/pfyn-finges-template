@@ -8,6 +8,8 @@ export function MapComponent(props) {
     let [bounds, setBounds] = useState();
     let [POIS, setPOIS] = useState([{lat: '', lng: ''}, {lat: '', lng: ''}])
 
+    console.log(props);
+
     return <MapContainer
         center={[46.3021, 7.6261]}
         zoom={14.5}
@@ -16,7 +18,7 @@ export function MapComponent(props) {
     >
         <TileLayer url="https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg" />
         {props.poisCollection != null && props.poisCollection.map((coordinate) => <POI key={coordinate.id} POI={coordinate}/>)}
-        <Polyline pathOptions={{ fillColor: 'red', color: 'blue' }} positions={props.pois2}/>
+        {props.wayPoints != null && props.wayPoints.map((way) => <WAYS way={way}/>)}
         <Popup position={props.position}>
         </Popup>
         <MarkerCreation setPosition={props.setPosition}/>
@@ -30,6 +32,10 @@ function POI(props) {
 
     console.error(tempLat);
     return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
+}
+
+function WAYS(props) {
+    return <Polyline pathOptions={{ fillColor: 'red', color: 'blue' }} positions={props.way}/>
 }
 
 function MarkerCreation(props) {

@@ -1,6 +1,19 @@
 // Configure FirebaseUI.
 import { firebase } from "../initFirebase";
 import { StyledFirebaseAuth } from "react-firebaseui";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardImg,
+  CardSubtitle,
+  CardText,
+  CardTitle,
+  Col,
+  Form,
+  FormGroup, Input, Label,
+  Row
+} from "reactstrap";
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -37,8 +50,33 @@ const uiConfig = {
 
 export default function SignIn() {
   return (
-    <div className="App">
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    <div style={{ backgroundImage: 'url("/imageFondLogin.jpg")'}}>
+      <h1>Welcome to the Finges trip 2021</h1>
+
+     <div className="App" >
+
+      <Row>
+
+        <Card >
+
+          <h4>Sign in</h4>
+        <Form>
+          <FormGroup >
+            <Label for="exampleEmail">Email</Label>
+            <Input type="email" name="email" id="exampleEmail" placeholder="Email" />
+          </FormGroup>
+          <FormGroup>
+            <Label for="examplePassword">Password</Label>
+            <Input type="password" name="password" id="examplePassword" placeholder="Password" />
+          </FormGroup>
+
+        </Form>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        </Card>
+      </Row>
+
     </div>
+    </div>
+
   );
 }

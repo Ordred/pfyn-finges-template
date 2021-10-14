@@ -15,6 +15,7 @@ import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
+import {DiscoveredPOIS} from "./Discovered";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -152,7 +153,9 @@ function App() {
                 <Route path="/code/:code" component={CodeActivationPage}/>
 
                 <Route path="/map/discovered-points-of-interest">
-
+                    <MapComponent>
+                    <DiscoveredPOIS user={firebase.auth().currentUser.uid} pois={poisCollection}/>
+                    </MapComponent>
                 </Route>
 
                 <Route path="/map/walk-history">

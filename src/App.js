@@ -142,7 +142,7 @@ function App() {
 
                 <Route path="/admin/poi/add">
                     <SetPOIS setPOIs={setPoisCollection} position={position}/>
-                    <MapComponent poisCollection={poisCollection}  setPosition={setPosition} position={position}>
+                    <MapComponent>
                         {poisCollection != null && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
                         <Popup position={position}/>
                         <MarkerCreation setPositionCallback={setPosition}/>

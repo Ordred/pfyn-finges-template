@@ -10,6 +10,7 @@ import {SetPOIS} from "./SetPOIS";
 import {Switch, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
+import {WalkHistory} from "./pages/WalkHistory";
 import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
@@ -43,7 +44,7 @@ function App() {
             })
             .catch(error => console.error(error)
             );
-    // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
+        // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
     }, []);
 
     // Get authenticated state using the custom "auth" hook
@@ -153,11 +154,7 @@ function App() {
 
                 </AuthenticatedRoute>
 
-                <AuthenticatedRoute path="/map/walk-history">
-                    <MapComponent>
-                        <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={coordinates}/>
-                    </MapComponent>
-                </AuthenticatedRoute>
+                <AuthenticatedRoute path="/map/walk-history/:gpx?" component={WalkHistory}/>
 
                 <AuthenticatedRoute path="/">
                     <Redirect to="/map/walk-history"/>
@@ -165,8 +162,8 @@ function App() {
             </Switch>
 
             {/* Render the collection of POIs from the DB */}
-            <h4>POIs Collection</h4>
-            <code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>
+            {/*<h4>POIs Collection</h4>*/}
+            {/*<code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>*/}
 
         </div>
     );

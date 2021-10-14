@@ -9,11 +9,11 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 
 
-export function WalkHistory(){
+export function WalkHistory(props) {
 
     const db = firebase.firestore();
     const {isAuthenticated, isAdmin} = useAuth();
-
+    let code = props.match.params.gpx;
     let [gpxList, setGpx] = useState(null);
     let [loadError, setLoadError] = useState(null);
     useEffect(() => {
@@ -39,7 +39,7 @@ export function WalkHistory(){
                 return;
             }
 
-                userData = userData.gpx_files
+            userData = userData.gpx_files
             setGpx(userData);
             console.log(userData)
         }
@@ -51,13 +51,15 @@ export function WalkHistory(){
 
 
 
-
-    let storage = firebase.storage();
-    let ref = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
     let [coordinates, setCoordinates] = useState(0)
+
+
 
     useEffect(() => {
 
+
+        let storage = firebase.storage();
+        let ref = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/" + code);
         ref.getDownloadURL()
             .then(url => fetch(url, {mode: "cors"}))
             .then(response => response.text())
@@ -70,24 +72,25 @@ export function WalkHistory(){
             })
             .catch(error => console.error(error)
             );
-    }, []);
+    }, [code]);
 
-    if(!isAuthenticated) {
+    if (!isAuthenticated) {
         // TODO: Redirect to the root URL to do the login ?
         return <p>You are not authenticated</p>;
     }
 
-        return(
-            <>
+
+    return (
+        <>
             <MapComponent>
-                <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={coordinates}/>
+                <Polyline pathOptions={{fillColor: 'red', color: 'purple'}} positions={coordinates}/>
             </MapComponent>
-            <ul style={{ padding: 0}}>
-                {gpxList !=null &&gpxList.map((gpx, index)=>(
+            <ul style={{padding: 0}}>
+                {gpxList != null && gpxList.map((gpx, index) => (
                     <li key={index}>
                         <div>
                             <p>
-                                <Link className="App-link">
+                                <Link to={`/map/walk-history/${gpx}`} className="App-link">
                                     {gpx}
                                 </Link>
                             </p>
@@ -95,6 +98,7 @@ export function WalkHistory(){
                     </li>
                 ))}
 
-            </ul></>)
+            </ul>
+        </>)
 
 }

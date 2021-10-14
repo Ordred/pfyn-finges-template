@@ -43,7 +43,7 @@ function App() {
             })
             .catch(error => console.error(error)
             );
-    // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
+        // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
     }, []);
 
     // Get authenticated state using the custom "auth" hook
@@ -156,7 +156,9 @@ function App() {
 
                 </Route>
 
-                <Route path="/map/walk-history" component={WalkHistory}>
+                <Route path="/map/walk-history/:gpx?" component={WalkHistory}render={(routeParams)=>(
+                    {}
+                )}>
 
                 </Route>
 

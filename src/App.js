@@ -3,12 +3,11 @@ import 'leaflet/dist/leaflet.css'
 
 import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
-import SignIn from "./pages/SignIn";
 import { useEffect, useState } from "react";
 import React from 'react'
 import {MapComponent} from "./Map";
 import {SetPOIS} from "./SetPOIS";
-import {Switch, Route, Redirect} from 'react-router-dom';
+import {Switch, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
@@ -16,6 +15,7 @@ import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
 import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
+import AdminRoute from "./components/AdminRoute";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -136,16 +136,16 @@ function App() {
             </div>
 
             <Switch>
-                <AuthenticatedRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
+                <AdminRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
 
-                <AuthenticatedRoute path="/admin/poi/add">
+                <AdminRoute path="/admin/poi/add">
                     <SetPOIS setPOIs={setPoisCollection} position={position}/>
                     <MapComponent>
                         {poisCollection != null && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
                         <Popup position={position}/>
                         <MarkerCreation setPositionCallback={setPosition}/>
                     </MapComponent>
-                </AuthenticatedRoute>
+                </AdminRoute>
 
                 <AuthenticatedRoute path="/code/:code" component={CodeActivationPage}/>
 

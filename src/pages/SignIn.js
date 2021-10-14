@@ -59,7 +59,7 @@ export default function SignIn() {
 
         <Card >
 
-          <h4>Sign in</h4>
+          <h4>Sign in </h4>
         <Form>
           <FormGroup >
             <Label for="exampleEmail">Email</Label>

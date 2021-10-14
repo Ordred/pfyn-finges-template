@@ -1,44 +1,37 @@
 import "./App.css";
+import 'leaflet/dist/leaflet.css'
 
-import _ from "lodash";
 import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
 import SignIn from "./pages/SignIn";
 import { useEffect, useState } from "react";
-import 'leaflet/dist/leaflet.css'
 import React from 'react'
-import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
 import {MapComponent} from "./Map";
 import {SetPOIS} from "./SetPOIS";
+import {Switch, Route, Redirect} from 'react-router-dom';
+import {CodeActivationPage} from "./pages/CodeActivationPage";
+import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
+import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
+import {Icon} from "leaflet";
+import markerIconPng from "leaflet/dist/images/marker-icon.png"
+import LinkButton from "./components/LinkButton";
+import Nav from "./Nav";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
 
 // EXAMPLE : Reference to a collection of POIs
 export const COLLECTION_POIS = "pois";
-const COLLECTION_POIS2 = "pois2";
-
 export const COLLECTION_USERS = "users";
-
-
-
-const POIS = [
-    {lat: 46.3021, lng: 7.6261},{lat: 46.3021, lng: 7.6371}
-];
-
-const POIS2 = [
-    [[46.3021, 7.6261],[46.3021, 7.6371]],[[46.3021, 7.6261],[46.3021, 7.6371]]
-];
-
 
 function App() {
     let storage = firebase.storage();
-    let ref = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
+    let referenceToGPXFile = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
     let [coordinates, setCoordinates] = useState(0)
 
     useEffect(() => {
 
-        ref.getDownloadURL()
+        referenceToGPXFile.getDownloadURL()
             .then(url => fetch(url, {mode: "cors"}))
             .then(response => response.text())
             .then(response_content => {
@@ -50,7 +43,9 @@ function App() {
             })
             .catch(error => console.error(error)
             );
+    // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
     }, []);
+
     // Get authenticated state using the custom "auth" hook
     const { isAuthenticated, isAdmin } = useAuth();
 
@@ -58,16 +53,11 @@ function App() {
     const [poisCollection, setPoisCollection] = useState(null);
 
     const [uid, setUID] = useState(firebase.auth().currentUser != null && firebase.auth().currentUser.uid);
-
-
     const [position, setPosition] = useState({lat: 46.3021, lng: 7.6261});
-
-
 
     useEffect(() => {
         // EXAMPLE : Fetch POIs of your DB
         const poisCollection = db.collection(COLLECTION_POIS);
-
 
         // Subscribe to DB changes
         const unsubscribe = poisCollection.onSnapshot(
@@ -75,7 +65,6 @@ function App() {
                 // Store the collection of POIs as an array of ID => Data pairs
                 //setPoisCollection(snapshot.docs.map((d) => ({ [d.id]: d.data() })));
                 setPoisCollection(snapshot.docs.map((d) => ({id: d.id, ...d.data()} )));
-
             },
             (error) => console.error(error)
         );
@@ -84,34 +73,17 @@ function App() {
         return () => unsubscribe();
     }, []);
 
-
-    const addUser = async () => {
-        // Add a random POI to your group's DB
-        const userCollection = await db.collection(COLLECTION_USERS);
-
-        try {
-            await userCollection.add({
-                uid: {uid},
-                discovered: ['','']
-            });
-        } catch (e) {
-            console.error("Could not add new User");
-        }
-    }
-
-
-
     // EXAMPLE : Add a new document to the DB
     const addDummyData = async () => {
-        // Add a random POI to your group's DB
+        // Add a random PointOfInterest to your group's DB
         const poisCollection = await db.collection(COLLECTION_POIS);
 
         try {
             await poisCollection.add({
-                name: `POI Test ${_.random(500)}`,
+                name: `POI Test ${Math.floor(Math.random() * 500)}`,
             });
         } catch (e) {
-            console.error("Could not add new POI");
+            console.error("Could not add new PointOfInterest");
         }
     };
 
@@ -148,16 +120,9 @@ function App() {
         <div className="App">
 
             <h1>Welcome to the Pfyn-Finges Forest!</h1>
-            <SetPOIS setPOIs={setPoisCollection} position={position}/>
-            {/*<MapComponent pois={POIS} wayPoints={POIS2} poisCollection={poisCollection}  setPosition={setPosition} position={position}/>*/}
-            <MapComponent line={coordinates}/>
 
             {/* Show role based on admin status (from custom claim) */}
             <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
-
-            {/* Render the collection of POIs from the DB */}
-            <h4>POIs Collection</h4>
-            <code style={{ margin: "1em" }}>{JSON.stringify(poisCollection)}</code>
 
             {/* Render buttons to add/remove data & log out */}
             <div style={{ display: "flex" }}>
@@ -166,12 +131,69 @@ function App() {
                     <>
                         <button onClick={addDummyData}>Add Dummy Data</button>
                         <button onClick={cleanDB}>Clean DB</button>
+                        <LinkButton to="/admin/code/generation">Generate a QR code for a PoI</LinkButton>
+                        <LinkButton to="/admin/poi/add">Create a PoI</LinkButton>
                     </>
                 )}
+
                 <button onClick={signOut}>Logout</button>
             </div>
+
+            <Switch>
+                <Route path="/admin/code/generation" component={QrCodeGenerationPage}/>
+
+                <Route path="/admin/poi/add">
+                    <SetPOIS setPOIs={setPoisCollection} position={position}/>
+                    <MapComponent>
+                        {poisCollection != null && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
+                        <Popup position={position}/>
+                        <MarkerCreation setPositionCallback={setPosition}/>
+                    </MapComponent>
+                </Route>
+
+                <Route path="/code/:code" component={CodeActivationPage}/>
+
+                <Route path="/map/discovered-points-of-interest">
+
+                </Route>
+
+                <Route path="/map/walk-history">
+                    <MapComponent>
+                        <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={coordinates}/>
+                    </MapComponent>
+                </Route>
+
+                <Route path="/">
+                    {isAuthenticated ? <Redirect to="/map/walk-history"/> : <Redirect to="/login"/>}
+                    <Nav/>
+                </Route>
+            </Switch>
+
+            {/* Render the collection of POIs from the DB */}
+            <h4>POIs Collection</h4>
+            <code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>
+
         </div>
     );
 }
+
+function PointOfInterest(props) {
+    let tempLat = +props.latitude;
+    let tempLng = +props.longitude;
+
+    return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
+}
+
+function MarkerCreation(props) {
+    useMapEvents({
+        click: (e) => {
+            console.log("latlng is :", e.latlng)
+            props.setPositionCallback(e.latlng)
+        }
+    });
+
+    return null;
+}
+
 
 export default App;

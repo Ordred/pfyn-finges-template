@@ -11,6 +11,7 @@ import {SetPOIS} from "./SetPOIS";
 import {Switch, Route, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
+import {WalkHistory} from "./pages/WalkHistory";
 import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
@@ -155,10 +156,8 @@ function App() {
 
                 </Route>
 
-                <Route path="/map/walk-history">
-                    <MapComponent>
-                        <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={coordinates}/>
-                    </MapComponent>
+                <Route path="/map/walk-history" component={WalkHistory}>
+
                 </Route>
 
                 <Route path="/">
@@ -167,8 +166,8 @@ function App() {
             </Switch>
 
             {/* Render the collection of POIs from the DB */}
-            <h4>POIs Collection</h4>
-            <code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>
+            {/*<h4>POIs Collection</h4>*/}
+            {/*<code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>*/}
 
         </div>
     );

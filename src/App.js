@@ -15,6 +15,7 @@ import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
+import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -111,9 +112,6 @@ function App() {
         }
     };
 
-    // If the user is not authenticated, render the "SignIn" component (Firebase UI)
-    if (!isAuthenticated) return <SignIn />;
-
     // Normal rendering of the app for authenticated users
     return (
         <div className="App">
@@ -138,32 +136,32 @@ function App() {
             </div>
 
             <Switch>
-                <Route path="/admin/code/generation" component={QrCodeGenerationPage}/>
+                <AuthenticatedRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
 
-                <Route path="/admin/poi/add">
+                <AuthenticatedRoute path="/admin/poi/add">
                     <SetPOIS setPOIs={setPoisCollection} position={position}/>
                     <MapComponent>
                         {poisCollection != null && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
                         <Popup position={position}/>
                         <MarkerCreation setPositionCallback={setPosition}/>
                     </MapComponent>
-                </Route>
+                </AuthenticatedRoute>
 
-                <Route path="/code/:code" component={CodeActivationPage}/>
+                <AuthenticatedRoute path="/code/:code" component={CodeActivationPage}/>
 
-                <Route path="/map/discovered-points-of-interest">
+                <AuthenticatedRoute path="/map/discovered-points-of-interest">
 
-                </Route>
+                </AuthenticatedRoute>
 
-                <Route path="/map/walk-history">
+                <AuthenticatedRoute path="/map/walk-history">
                     <MapComponent>
                         <Polyline pathOptions={{ fillColor: 'red', color: 'purple' }} positions={coordinates}/>
                     </MapComponent>
-                </Route>
+                </AuthenticatedRoute>
 
-                <Route path="/">
-                    {isAuthenticated ? <Redirect to="/map/walk-history"/> : <Redirect to="/login"/>}
-                </Route>
+                <AuthenticatedRoute path="/">
+                    <Redirect to="/map/walk-history"/>
+                </AuthenticatedRoute>
             </Switch>
 
             {/* Render the collection of POIs from the DB */}

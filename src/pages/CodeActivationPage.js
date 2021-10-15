@@ -1,9 +1,11 @@
 import {firebase} from '../initFirebase';
-import {useAuth} from "../context/AuthContext";
 import {useEffect, useState} from "react";
+import {COLLECTION_POIS, COLLECTION_USERS} from "../App";
+import {firebaseDocIntoPoiObject} from "../hooks/usePoiCollection";
 
 export default function CodeActivationPage(props) {
-    let {isAuthenticated} = useAuth();
+    // Unauthenticated users are kept from executing this component by the AuthenticatedRoute HoC
+
     let code = props.match.params.code;
 
     let [redirectUrl, setRedirectUrl] = useState(null);
@@ -11,18 +13,14 @@ export default function CodeActivationPage(props) {
 
     useEffect(() => {
         async function executeFirestoreTxn(){
-            if(!isAuthenticated){
-                return;
-            }
-
-            // POI loading logic
+            // POI loading logic, see comment below on the reasoning why the PoI is loaded manually
             const db = firebase.firestore();
-            const reference = db.collection('pois').doc(code);
+            const reference = db.collection(COLLECTION_POIS).doc(code);
             let poiData;
 
             try{
                 // We don't need a snapshot with live update capabilities. We are querying the data and using it for something
-                // else. Plus, the user will leave this page soon anyway
+                // else. Plus, the user will leave this page soon anyway, making the live update capability useless
                 poiData = await reference.get();
             } catch (e) {
                 console.error("Couldn't query database for PoI", e);
@@ -38,7 +36,7 @@ export default function CodeActivationPage(props) {
             // Note: this shouldn't return undefined since we have checked for the existence of
             // the document we want to retrive
             console.assert(poiData.data() !== undefined, "Point of interest data is undefined even after verification");
-            const poi = {id: poiData.id, ...poiData.data()};
+            const poi = firebaseDocIntoPoiObject(poiData);
 
             // POI unlocking logic
 
@@ -48,7 +46,7 @@ export default function CodeActivationPage(props) {
             console.assert(currentUser !== null);
             const userId = currentUser.uid;
 
-            const userDataRef = db.collection('users')
+            const userDataRef = db.collection(COLLECTION_USERS)
                 .doc(userId);
 
             let userData;
@@ -81,12 +79,7 @@ export default function CodeActivationPage(props) {
         executeFirestoreTxn();
         // We don't have any "live" snapshots loaded into memory, we can safely
         // finish this effect without worrying about leaking listeners
-    }, [code, isAuthenticated]);
-
-    if(!isAuthenticated) {
-        // TODO: Redirect to the root URL to do the login ?
-        return <p>You are not authenticated</p>;
-    }
+    }, [code]);
 
     if (redirectUrl === null){
         if (loadError !== null){

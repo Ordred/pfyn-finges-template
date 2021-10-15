@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {firebase} from "../initFirebase";
 import {COLLECTION_POIS} from "../App";
 
-function firebaseDocIntoObject(document) {
+export function firebaseDocIntoPoiObject(document) {
     return {
         id: document.id,
         ...document.data()
@@ -18,7 +18,7 @@ export default function usePoiCollection(){
 
         const unsubscribe = collection.onSnapshot(
             snapshot => {
-                setPoisCollection(snapshot.docs.map(firebaseDocIntoObject));
+                setPoisCollection(snapshot.docs.map(firebaseDocIntoPoiObject));
             },
             console.error
         )

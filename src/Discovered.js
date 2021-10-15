@@ -1,6 +1,6 @@
 
 
-import {Popup} from "react-leaflet";
+import {Marker, Popup} from "react-leaflet";
 import {firebase} from "./initFirebase";
 import {Icon} from "leaflet";
 import {useEffect, useState} from "react";
@@ -36,20 +36,24 @@ export function DiscoveredPOIS(props) {
     )
 
     function getDiscoveredPOIS(poi) {
-        let latitude = props.pois.find(id => props.pois.key === poi.key).latitude;
-        let longitude = props.pois.find(id => props.pois.key === poi.key).longitude;
 
-        return [latitude, longitude]
+        let latitude;
+        let longitude;
+
+        let tempPOI = props.pois.find(findPOI => findPOI.id === poi);
+
+        if (tempPOI != null) {
+
+            latitude = tempPOI.latitude;
+            longitude = tempPOI.longitude;
+        }
+
+        console.log(latitude, longitude)
+
+        return latitude != null && [latitude, longitude]
 
     }
 
-
-    if(user){
-       console.log(user);
-       console.log(user.discovered)
-    }
-
-
-    return user != null && user.discovered.map(poi => <Popup key={poi.key} position={getDiscoveredPOIS(poi)}/>)
+    return user != null && user.discovered.map(poi => <Marker key={poi} position={{lat: getDiscoveredPOIS(poi)[0], lng: getDiscoveredPOIS(poi)[1]}}/>)
 }
 

@@ -11,7 +11,7 @@ import {Switch, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 import {WalkHistory} from "./pages/WalkHistory";
-import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
+import {Marker, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
@@ -21,34 +21,12 @@ import AdminRoute from "./components/AdminRoute";
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
 
-// EXAMPLE : Reference to a collection of POIs
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
 
 function App() {
-    let storage = firebase.storage();
-    let referenceToGPXFile = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/test3.gpx");
-    let [coordinates, setCoordinates] = useState(0)
-
-    useEffect(() => {
-
-        referenceToGPXFile.getDownloadURL()
-            .then(url => fetch(url, {mode: "cors"}))
-            .then(response => response.text())
-            .then(response_content => {
-                let parser = new DOMParser();
-                let parsed_doc = parser.parseFromString(response_content, "application/xml");
-                let nodes = [...parsed_doc.querySelectorAll("trkpt")];
-                let coords = nodes.map(node => [node.attributes.lat.value, node.attributes.lon.value])
-                setCoordinates(coords);
-            })
-            .catch(error => console.error(error)
-            );
-        // Note for the dependency array: if you put the reference as a dependency, this effect will be run over and over and over and over again
-    }, []);
-
     // Get authenticated state using the custom "auth" hook
-    const { isAuthenticated, isAdmin } = useAuth();
+    const { isAdmin } = useAuth();
 
     // EXAMPLE : Store an entire collection of POIs in the state
     const [poisCollection, setPoisCollection] = useState(null);

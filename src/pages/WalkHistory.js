@@ -16,6 +16,7 @@ export function WalkHistory(props) {
     let code = props.match.params.gpx;
     let [gpxList, setGpx] = useState(null);
     let [loadError, setLoadError] = useState(null);
+
     useEffect(() => {
         async function getGpxFileFromAuthUser() {
             if (!isAuthenticated) {

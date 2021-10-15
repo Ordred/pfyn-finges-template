@@ -2,7 +2,7 @@ import {firebase} from "../initFirebase";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Polyline} from "react-leaflet";
-import {MapComponent} from "../Map";
+import {MapComponent} from "../components/Map";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import useUserData from "../hooks/useUserData";

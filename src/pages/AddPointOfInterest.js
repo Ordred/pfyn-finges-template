@@ -1,5 +1,5 @@
-import {SetPOIS} from "../SetPOIS";
-import {MapComponent} from "../Map";
+import {SetPOIS} from "../components/SetPOIS";
+import {MapComponent} from "../components/Map";
 import {Marker, Popup, useMapEvents} from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import React, {useState} from "react";

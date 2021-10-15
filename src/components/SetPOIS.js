@@ -1,9 +1,9 @@
-import "./App.css";
+import "../App.css";
 
 import 'leaflet/dist/leaflet.css'
 import React, {useState} from 'react'
-import {COLLECTION_POIS} from "./App";
-import {firebase} from "./initFirebase";
+import {COLLECTION_POIS} from "../App";
+import {firebase} from "../initFirebase";
 
 const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
 

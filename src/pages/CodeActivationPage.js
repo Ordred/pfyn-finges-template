@@ -2,7 +2,7 @@ import {firebase} from '../initFirebase';
 import {useAuth} from "../context/AuthContext";
 import {useEffect, useState} from "react";
 
-export function CodeActivationPage(props) {
+export default function CodeActivationPage(props) {
     let {isAuthenticated} = useAuth();
     let code = props.match.params.code;
 

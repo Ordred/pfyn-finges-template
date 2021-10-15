@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 
 
-export function WalkHistory(props) {
+export default function WalkHistory(props) {
 
     const db = firebase.firestore();
     const {isAuthenticated, isAdmin} = useAuth();

@@ -5,7 +5,7 @@ import {QrCode} from "../components/QrCode";
 
 const database = firebase.firestore();
 
-export function QrCodeGenerationPage() {
+export default function QrCodeGenerationPage() {
     function handlePoiButtonClick(e){
         setCurrentPoiCode(e.target.dataset.poi)
     }

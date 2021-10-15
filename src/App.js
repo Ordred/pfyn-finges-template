@@ -5,9 +5,10 @@ import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
 import React from 'react'
 import {Switch, Redirect} from 'react-router-dom';
-import {CodeActivationPage} from "./pages/CodeActivationPage";
-import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
-import {WalkHistory} from "./pages/WalkHistory";
+
+import CodeActivationPage from "./pages/CodeActivationPage";
+import QrCodeGenerationPage from "./pages/QrCodeGeneration";
+import WalkHistory from "./pages/WalkHistory";
 import LinkButton from "./components/LinkButton";
 import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";

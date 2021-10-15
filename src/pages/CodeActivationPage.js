@@ -34,7 +34,7 @@ export default function CodeActivationPage(props) {
             }
 
             // Note: this shouldn't return undefined since we have checked for the existence of
-            // the document we want to retrive
+            // the document we want to retrieve
             console.assert(poiData.data() !== undefined, "Point of interest data is undefined even after verification");
             const poi = firebaseDocIntoPoiObject(poiData);
 
@@ -52,6 +52,7 @@ export default function CodeActivationPage(props) {
             let userData;
 
             try {
+                // See comment in the try-catch block in the PoI loading logic
                 userData = (await userDataRef.get()).data();
             } catch (e) {
                 console.error("Couldn't query database for user", e);

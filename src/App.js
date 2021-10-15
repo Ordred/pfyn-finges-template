@@ -60,6 +60,7 @@ function App() {
         // EXAMPLE : Fetch POIs of your DB
         const poisCollection = db.collection(COLLECTION_POIS);
 
+
         // Subscribe to DB changes
         const unsubscribe = poisCollection.onSnapshot(
             (snapshot) => {
@@ -155,7 +156,7 @@ function App() {
 
                 <Route path="/map/discovered-points-of-interest">
                     <MapComponent>
-                        {firebase.auth().currentUser.uid != null && <DiscoveredPOIS user={firebase.auth().currentUser.uid} pois={poisCollection}/>}
+                        <DiscoveredPOIS user={firebase.auth().currentUser.uid} pois={poisCollection}/>
                     </MapComponent>
                 </Route>
 
@@ -185,7 +186,12 @@ function PointOfInterest(props) {
     let tempLat = +props.latitude;
     let tempLng = +props.longitude;
 
-    return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
+    return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>        <Popup>
+        {props.name}<br/>
+        {props.description}<br/>
+        <a href={props.url}>{props.url}</a>
+    </Popup>
+    </Marker>
 }
 
 function MarkerCreation(props) {

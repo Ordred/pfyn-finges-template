@@ -2,12 +2,13 @@ import "./App.css";
 
 import 'leaflet/dist/leaflet.css'
 import React, {useState} from 'react'
-import {db, COLLECTION_POIS} from "./App";
+import {COLLECTION_POIS} from "./App";
+import {firebase} from "./initFirebase";
 
 const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
 
 export function SetPOIS(props) {
-
+    let db = firebase.firestore();
     let [newPOI, setNewPOI] = useState(EMPTY_POI)
 
     const addPOI = async (event) => {

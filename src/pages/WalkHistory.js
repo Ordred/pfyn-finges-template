@@ -1,6 +1,5 @@
 import {useAuth} from "../context/AuthContext";
 import {firebase} from "../initFirebase";
-import {db} from "../App";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Polyline} from "react-leaflet";

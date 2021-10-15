@@ -13,9 +13,6 @@ import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AddPointOfInterest from "./pages/AddPointOfInterest";
 
-// Get the DB object from the firebase app
-export const db = firebase.firestore();
-
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
 

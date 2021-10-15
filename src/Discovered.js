@@ -7,9 +7,6 @@ import {useEffect, useState} from "react";
 
 export function DiscoveredPOIS(props) {
 
-    console.log(props.pois);
-    console.log(props.user)
-
     let [user, setUser] = useState();
 
     async function getUser() {
@@ -47,8 +44,6 @@ export function DiscoveredPOIS(props) {
             latitude = tempPOI.latitude;
             longitude = tempPOI.longitude;
         }
-
-        console.log(latitude, longitude)
 
         return latitude != null && [latitude, longitude]
 

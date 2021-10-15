@@ -16,6 +16,7 @@ import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
 import {DiscoveredPOIS} from "./Discovered";
+import {ListPOIS} from "./ListPOIS";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -154,7 +155,7 @@ function App() {
 
                 <Route path="/map/discovered-points-of-interest">
                     <MapComponent>
-                    <DiscoveredPOIS user={firebase.auth().currentUser.uid} pois={poisCollection}/>
+                        {firebase.auth().currentUser.uid != null && <DiscoveredPOIS user={firebase.auth().currentUser.uid} pois={poisCollection}/>}
                     </MapComponent>
                 </Route>
 
@@ -171,7 +172,10 @@ function App() {
 
             {/* Render the collection of POIs from the DB */}
             <h4>POIs Collection</h4>
-            <code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>
+            <code style={{ margin: "1em", textAlign: 'left' }}>
+                <ListPOIS pois={poisCollection}/>
+                {/*<pre>{JSON.stringify(poisCollection, null, 2)}</pre>*/}
+            </code>
 
         </div>
     );

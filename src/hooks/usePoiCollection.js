@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {firebase} from "../initFirebase";
+import {COLLECTION_POIS} from "../App";
 
 function firebaseDocIntoObject(document) {
     return {
@@ -13,7 +14,7 @@ export default function usePoiCollection(){
 
     useEffect(() => {
         const db = firebase.firestore();
-        const collection = db.collection('pois');
+        const collection = db.collection(COLLECTION_POIS);
 
         const unsubscribe = collection.onSnapshot(
             snapshot => {

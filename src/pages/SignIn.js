@@ -1,6 +1,7 @@
 // Configure FirebaseUI.
 import { firebase } from "../initFirebase";
 import { StyledFirebaseAuth } from "react-firebaseui";
+import {COLLECTION_USERS} from "../App";
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -13,19 +14,15 @@ const uiConfig = {
   callbacks: {
     // Avoid redirects after sign-in.
     signInSuccessWithAuthResult: ({user}) => {
-
-
       async function createUserData() {
         let db = firebase.firestore();
-        let users = db.collection('users');
+        let users = db.collection(COLLECTION_USERS);
         let userDocumentRef = users.doc(user.uid);
         let userDocument = await userDocumentRef.get();
 
         if (!userDocument.exists) {
           await userDocumentRef.set({discovered: [], gpx_files: []});
-
         }
-
       }
 
       createUserData();

@@ -5,18 +5,14 @@ import { firebase } from "./initFirebase";
 import { useAuth } from "./context/AuthContext";
 import { useEffect, useState } from "react";
 import React from 'react'
-import {MapComponent} from "./Map";
-import {SetPOIS} from "./SetPOIS";
 import {Switch, Redirect} from 'react-router-dom';
 import {CodeActivationPage} from "./pages/CodeActivationPage";
 import {QrCodeGenerationPage} from "./pages/QrCodeGeneration";
 import {WalkHistory} from "./pages/WalkHistory";
-import {Marker, useMapEvents, Popup} from "react-leaflet";
-import {Icon} from "leaflet";
-import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
 import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";
+import AddPointOfInterest from "./pages/AddPointOfInterest";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -30,9 +26,6 @@ function App() {
 
     // EXAMPLE : Store an entire collection of POIs in the state
     const [poisCollection, setPoisCollection] = useState(null);
-
-    const [uid, setUID] = useState(firebase.auth().currentUser != null && firebase.auth().currentUser.uid);
-    const [position, setPosition] = useState({lat: 46.3021, lng: 7.6261});
 
     useEffect(() => {
         // EXAMPLE : Fetch POIs of your DB
@@ -118,12 +111,7 @@ function App() {
                 <AdminRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
 
                 <AdminRoute path="/admin/poi/add">
-                    <SetPOIS setPOIs={setPoisCollection} position={position}/>
-                    <MapComponent>
-                        {poisCollection != null && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
-                        <Popup position={position}/>
-                        <MarkerCreation setPositionCallback={setPosition}/>
-                    </MapComponent>
+                    <AddPointOfInterest setPoisCollection={setPoisCollection} poisCollection={poisCollection} />
                 </AdminRoute>
 
                 <AuthenticatedRoute path="/code/:code" component={CodeActivationPage}/>
@@ -146,24 +134,5 @@ function App() {
         </div>
     );
 }
-
-function PointOfInterest(props) {
-    let tempLat = +props.latitude;
-    let tempLng = +props.longitude;
-
-    return <Marker position={{lat: tempLat, lng: tempLng}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}/>
-}
-
-function MarkerCreation(props) {
-    useMapEvents({
-        click: (e) => {
-            console.log("latlng is :", e.latlng)
-            props.setPositionCallback(e.latlng)
-        }
-    });
-
-    return null;
-}
-
 
 export default App;

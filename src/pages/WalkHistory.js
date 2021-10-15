@@ -12,18 +12,18 @@ export default function WalkHistory(props) {
     // Unauthenticated users are kept from executing this component by the AuthenticatedRoute HoC
 
     let userData = useUserData(firebase.auth().currentUser.uid);
-    let [trackCoordinates, setTrackCoordinates] = useState(0)
+    let [trackCoordinates, setTrackCoordinates] = useState(null)
 
-    let code = props.match.params.gpx;
+    let gpxFilename = props.match.params.gpx;
 
     useEffect(() => {
         // Nothing requested ? Don't load anything then !
-        if(!code){
+        if(!gpxFilename){
             return;
         }
 
         let storage = firebase.storage();
-        let gpxFileRef = storage.refFromURL("gs://pfyn-finges-nature-park-grp2.appspot.com/" + code);
+        let gpxFileRef = storage.refFromURL(`gs://${process.env.REACT_APP_FIREBASE_STORAGE}/${gpxFilename}`);
 
         gpxFileRef.getDownloadURL()
             .then(url => fetch(url, {mode: "cors"}))
@@ -38,7 +38,7 @@ export default function WalkHistory(props) {
                 setTrackCoordinates(coords);
             })
             .catch(error => console.error("Couldn't fetch the user's GPX file", error));
-    }, [code]);
+    }, [gpxFilename]);
 
     if(userData === null){
         return null; // Don't render anything until the user data is loaded

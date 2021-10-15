@@ -17,8 +17,7 @@ export function SetPOIS(props) {
         try {
             await poisCollection.add({...newPOI, latitude: props.position.lat, longitude: props.position.lng});
         } catch (e) {
-            console.error("Could not add new POI");
-            console.error(e.stack)
+            console.error("Could not add new POI", e.stack);
         }
 
         resetNewPOI();

@@ -4,15 +4,17 @@ import {Marker, Popup, useMapEvents} from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import React, {useState} from "react";
 import {Icon} from "leaflet";
+import usePoiCollection from "../hooks/usePoiCollection";
 
-export default function AddPointOfInterest(props) {
+export default function AddPointOfInterest() {
     const [position, setPosition] = useState({lat: 46.3021, lng: 7.6261});
+    let poisCollection = usePoiCollection();
 
     return (
         <>
-            <SetPOIS setPOIs={props.setPoisCollection} position={position}/>
+            <SetPOIS position={position}/>
             <MapComponent>
-                {props.poisCollection && props.poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
+                {poisCollection && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
                 <Popup position={position}/>
                 <MarkerCreation setPositionCallback={setPosition}/>
             </MapComponent>

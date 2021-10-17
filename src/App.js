@@ -15,7 +15,6 @@ import {Marker, Polyline, useMapEvents, Popup} from "react-leaflet";
 import {Icon} from "leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import LinkButton from "./components/LinkButton";
-import Nav from "./Nav";
 
 // Get the DB object from the firebase app
 export const db = firebase.firestore();
@@ -118,7 +117,6 @@ function App() {
     // Normal rendering of the app for authenticated users
     return (
         <div className="App">
-
             <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
             {/* Show role based on admin status (from custom claim) */}
@@ -165,7 +163,6 @@ function App() {
 
                 <Route path="/">
                     {isAuthenticated ? <Redirect to="/map/walk-history"/> : <Redirect to="/login"/>}
-                    <Nav/>
                 </Route>
             </Switch>
 

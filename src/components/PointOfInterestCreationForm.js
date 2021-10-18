@@ -1,27 +1,28 @@
-import "./App.css";
+import "../App.css";
 
 import 'leaflet/dist/leaflet.css'
 import React, {useState} from 'react'
-import {db, COLLECTION_POIS} from "./App";
+import {COLLECTION_POIS} from "../App";
+import {firebase} from "../initFirebase";
 
 const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
 
-export function SetPOIS(props) {
-
+export function PointOfInterestCreationForm(props) {
+    let db = firebase.firestore();
     let [newPOI, setNewPOI] = useState(EMPTY_POI)
 
-    const addPOI = async (event) => {
+    const savePointOfInterest = async (event) => {
         event.preventDefault();
         const poisCollection = await db.collection(COLLECTION_POIS);
 
         try {
             await poisCollection.add({...newPOI, latitude: props.position.lat, longitude: props.position.lng});
         } catch (e) {
-            console.error("Could not add new POI");
-            console.error(e.stack)
+            console.error("Could not add new POI", e.stack);
         }
 
-        resetNewPOI();
+        setNewPOI(EMPTY_POI);
+        props.setCreationPositionCallback(null)
     };
 
     const handleFormInputChange = (event) => {
@@ -33,16 +34,9 @@ export function SetPOIS(props) {
         setNewPOI(newPOI => ({...newPOI, [name]: value}))
     };
 
-
-    /* Reset the new book object */
-    const resetNewPOI = () => {
-        setNewPOI(EMPTY_POI);
-    };
-
-
     return (
 
-        <form onSubmit={addPOI} className="addPOI">
+        <form onSubmit={savePointOfInterest} className="addPOI">
             <input
                 type="text"
                 id="name"
@@ -59,22 +53,6 @@ export function SetPOIS(props) {
                 value={newPOI.description}
                 onChange={handleFormInputChange}
             />
-            {/*<input
-                type="number"
-                id="latitude"
-                name="latitude"
-                placeholder="Latitude"
-                value={newPOI.latitude}
-                onChange={handleFormInputChange}
-            />
-            <input
-                type="number"
-                id="longitude"
-                name="longitude"
-                placeholder="Longitude"
-                value={newPOI.longitude}
-                onChange={handleFormInputChange}
-            />*/}
             <input
                 type="text"
                 id="url"
@@ -83,7 +61,7 @@ export function SetPOIS(props) {
                 value={newPOI.url}
                 onChange={handleFormInputChange}
             />
-            <button type="submit">Add POI</button>
+            <button type="submit">Save point of interest</button>
         </form>
     )
 }

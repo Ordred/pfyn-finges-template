@@ -1,31 +1,15 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
-import {firebase} from '../initFirebase';
 import {QrCode} from "../components/QrCode";
+import usePoiCollection from "../hooks/usePoiCollection";
 
-const database = firebase.firestore();
-
-export function QrCodeGenerationPage() {
+export default function QrCodeGenerationPage() {
     function handlePoiButtonClick(e){
         setCurrentPoiCode(e.target.dataset.poi)
     }
 
-    const [poisCollection, setPoiCollection] = useState(null);
+    const poisCollection = usePoiCollection();
     const [currentPoiCode, setCurrentPoiCode] = useState(null);
-
-    useEffect(() => {
-        // TODO: Refactor this into its own hook ?
-        const collection = database.collection("pois");
-        const unsubscribe = collection.onSnapshot(snap => {
-            setPoiCollection(
-                snap.docs.map(
-                    doc => ({id: doc.id, ...doc.data()})
-                )
-            )
-        }, console.error);
-
-        return () => unsubscribe();
-    }, [])
 
     return (
         <>
@@ -38,7 +22,7 @@ export function QrCodeGenerationPage() {
                 }
             </ul>
 
-            { currentPoiCode && <QrCode url={"http://localhost:3000/code/" + currentPoiCode }/>}
+            { currentPoiCode && <QrCode url={`${process.env.REACT_APP_APPLICATION_BASE_URL}/code/${currentPoiCode}`}/>}
         </>
     )
 }

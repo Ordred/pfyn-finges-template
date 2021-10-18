@@ -7,20 +7,19 @@
 
 
 .App {
-  text-align: center;
-/*  background-color: #282c34; */
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
-
+card{
+  padding : 10px;
+}
 h4{
   color: black;
 }
@@ -30,6 +29,10 @@ h1{
 }
 .App-link {
   color: #61dafb;
+}
+NavItem{
+  padding: 10px;
+  margin: 10px;
 }
 
 

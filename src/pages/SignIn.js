@@ -42,13 +42,8 @@ export default function SignIn() {
 
       <h1>Welcome to the Finges trip 2021</h1>
 
-
-
-
         <Card >
-
           <h4>Sign in </h4>
-
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
         </Card>
 

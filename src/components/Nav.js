@@ -1,8 +1,7 @@
-import React, {Component, useState} from 'react';
-import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem} from "reactstrap";
-import {NavLink} from "react-router-dom";
+import React, {useState} from 'react';
+import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Nav} from "reactstrap";
 
-function Nav(props)  {
+const Navigation = (props) => {
 
     const [collapsed, setCollapsed] = useState(true);
 
@@ -11,12 +10,12 @@ function Nav(props)  {
         return (
             <div>
                 <Navbar color="faded" light>
-                    <NavbarBrand href="/" className="mr-auto">reactstrap</NavbarBrand>
+                    <NavbarBrand href="/" className="mr-auto">Finges Web App</NavbarBrand>
                     <NavbarToggler onClick={toggleNavbar} className="mr-2" />
                     <Collapse isOpen={!collapsed} navbar>
                         <Nav navbar>
                             <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
+                                <NavLink href="/map/walk-history">Map Walk History</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
@@ -28,4 +27,4 @@ function Nav(props)  {
         );
     }
 
-export default Nav;
+export default Navigation;

@@ -59,7 +59,7 @@ export default function WalkHistory(props) {
     return (
         <>
             <MapComponent>
-                {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'purple'}} positions={trackCoordinates}/>}
+                {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'red'}} positions={trackCoordinates}/>}
             </MapComponent>
 
             {gpxFilesList}

@@ -2,6 +2,7 @@
 
 import {Marker, Popup} from "react-leaflet";
 import {firebase} from "./initFirebase";
+import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from "leaflet";
 import {useEffect, useState} from "react";
 
@@ -38,7 +39,7 @@ export function DiscoveredPOIS(props) {
 
     return user != null && user.discovered.map(poi => {
         let tempPOI = getDiscoveredPOIS(poi)
-        return <Marker key={poi} position={{lat: tempPOI.latitude, lng: tempPOI.longitude}}>
+        return <Marker key={poi} position={{lat: tempPOI.latitude, lng: tempPOI.longitude}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
         <Popup>
             {tempPOI.name}<br/>
             {tempPOI.discovered}<br/>

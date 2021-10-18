@@ -1,0 +1,10 @@
+{
+  "welcome_to_forest_finges": "Bienvenue dans la forêt de Finges",
+  "role": "Votre rôle est",
+  "logout": "Se déconnecter",
+  "add_dummy_data": "Add Dummy Data",
+  "clean_db": "Clean DB",
+  "generate_a_qr_code": "Generate a QR code for a PoI",
+  "create_poi": "Create a PoI",
+  "test": "test1234"
+}

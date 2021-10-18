@@ -2,6 +2,9 @@
 import { firebase } from "../initFirebase";
 import { StyledFirebaseAuth } from "react-firebaseui";
 import {COLLECTION_USERS} from "../App";
+import {
+  Card,
+} from "reactstrap";
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -34,8 +37,19 @@ const uiConfig = {
 
 export default function SignIn() {
   return (
-    <div className="App">
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+
+      <div className="App" style={{ backgroundImage: 'url("/imageFondLogin.jpg")'}} >
+
+      <h1>Welcome to the Finges trip 2021</h1>
+
+        <Card >
+          <h4>Sign in </h4>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        </Card>
+
+
     </div>
+
+
   );
 }

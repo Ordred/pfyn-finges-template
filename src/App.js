@@ -1,8 +1,8 @@
 import "./App.css";
 import 'leaflet/dist/leaflet.css'
 
-import { firebase } from "./initFirebase";
-import { useAuth } from "./context/AuthContext";
+import {firebase} from "./initFirebase";
+import {useAuth} from "./context/AuthContext";
 import React from 'react'
 import {Switch, Redirect} from 'react-router-dom';
 
@@ -18,6 +18,7 @@ import LinkButton from "./components/LinkButton";
 import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AddPointOfInterest from "./pages/AddPointOfInterest";
+import Navigation from "./components/Nav";
 
 import DiscoveredPointsOfInterest from "./pages/DiscoveredPointsOfInterest";
 
@@ -32,20 +33,20 @@ i18n
 
         fallbackLng: 'en',
         detection: {
-            order: [ 'cookie','htmlTag', 'localStorage','path', 'subdomain'],
-            caches:['cookie'],
+            order: ['cookie', 'htmlTag', 'localStorage', 'path', 'subdomain'],
+            caches: ['cookie'],
         },
-        backend:{
+        backend: {
             loadPath: '/assets/locales/{{lng}}/translation.json',
         },
-        react:{useSuspense: false},
+        react: {useSuspense: false},
 
     });
 
 function App() {
     const {t} = useTranslation();
     // Get authenticated state using the custom "auth" hook
-    const { isAdmin } = useAuth();
+    const {isAdmin, isAuthenticated} = useAuth();
 
     // Log out of the application
     const signOut = async () => {
@@ -58,49 +59,52 @@ function App() {
 
     // Normal rendering of the app for authenticated users
     return (
-        <div className="App">
-            <h1>{t('welcome_to_forest_finges')}</h1>
+        <div>
+            {isAuthenticated && <Navigation/>}
+            <div className="App">
+                <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
-            {/* Show role based on admin status (from custom claim) */}
-            <h2>{t('role')} : {isAdmin ? "Admin" : "User"}</h2>
+                {/* Show role based on admin status (from custom claim) */}
+                <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
 
-            {/* Render buttons to add/remove data & log out */}
-            <div style={{ display: "flex" }}>
-                {/* Admin-only tasks */}
-                {isAdmin && (
-                    <>
-                        <LinkButton to="/admin/code/generation">{t('generate_a_qr_code')}</LinkButton>
-                        <LinkButton to="/admin/poi/add">{t('create_poi')}</LinkButton>
-                    </>
-                )}
+                {/* Render buttons to add/remove data & log out */}
+                <div style={{display: "flex"}}>
+                    {/* Admin-only tasks */}
+                    {isAdmin && (
+                        <>
+                            <LinkButton to="/admin/code/generation">Generate a QR code for a PoI</LinkButton>
+                            <LinkButton to="/admin/poi/add">Create a PoI</LinkButton>
+                        </>
+                    )}
 
-                <button onClick={signOut}>{t('logout')}</button>
+                    <button onClick={signOut}>Logout</button>
+                </div>
+
+                <Switch>
+                    <AdminRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
+
+                    <AdminRoute path="/admin/poi/add" component={AddPointOfInterest}/>
+
+                    <AuthenticatedRoute path="/code/:code" component={CodeActivationPage}/>
+
+                    <AuthenticatedRoute path="/map/discovered-points-of-interest"
+                                        component={DiscoveredPointsOfInterest}/>
+
+                    <AuthenticatedRoute path="/map/walk-history/:gpx?" component={WalkHistory}/>
+
+                    <AuthenticatedRoute path="/">
+                        <Redirect to="/map/walk-history"/>
+                    </AuthenticatedRoute>
+                </Switch>
+
+                {/* Render the collection of POIs from the DB */}
+                {/*<h4>POIs Collection</h4>*/}
+                {/*<code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>*/}
+
             </div>
-
-            <Switch>
-                <AdminRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
-
-                <AdminRoute path="/admin/poi/add" component={AddPointOfInterest}/>
-
-                <AuthenticatedRoute path="/code/:code" component={CodeActivationPage}/>
-
-                <AuthenticatedRoute path="/map/discovered-points-of-interest" component={DiscoveredPointsOfInterest}/>
-
-                <AuthenticatedRoute path="/map/walk-history/:gpx?" component={WalkHistory}/>
-
-                <AuthenticatedRoute path="/">
-                    <Redirect to="/map/walk-history"/>
-                </AuthenticatedRoute>
-            </Switch>
-
-            {/* Render the collection of POIs from the DB */}
-            {/*<h4>POIs Collection</h4>*/}
-            {/*<code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>*/}
-
         </div>
     );
 }
-
 
 
 export default App;

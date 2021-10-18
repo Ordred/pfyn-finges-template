@@ -14,6 +14,8 @@ import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AddPointOfInterest from "./pages/AddPointOfInterest";
 
+import DiscoveredPointsOfInterest from "./pages/DiscoveredPointsOfInterest";
+
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
 
@@ -58,9 +60,7 @@ function App() {
 
                 <AuthenticatedRoute path="/code/:code" component={CodeActivationPage}/>
 
-                <AuthenticatedRoute path="/map/discovered-points-of-interest">
-
-                </AuthenticatedRoute>
+                <AuthenticatedRoute path="/map/discovered-points-of-interest" component={DiscoveredPointsOfInterest}/>
 
                 <AuthenticatedRoute path="/map/walk-history/:gpx?" component={WalkHistory}/>
 
@@ -76,5 +76,7 @@ function App() {
         </div>
     );
 }
+
+
 
 export default App;

@@ -1,45 +1,43 @@
 
-
+import { useAuth } from "./context/AuthContext";
 import {Marker, Popup} from "react-leaflet";
 import {firebase} from "./initFirebase";
 import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import {Icon} from "leaflet";
 import {useEffect, useState} from "react";
+import useUserData from "./hooks/useUserData";
+import usePoiCollection from "./hooks/usePoiCollection";
 
 export function DiscoveredPOIS(props) {
 
-    let [user, setUser] = useState();
+    let uid = useAuth().uid;
+    let user;
 
-    useEffect(() => {
-        async function getUser() {
-            let db = firebase.firestore();
-            let userCollection = db.collection("users");
-            console.log(props.user)
-            let userData = userCollection.doc(props.user);
+    user = useUserData(uid);
+    let pois = usePoiCollection();
 
-            let user = await userData.get()
-
-            setUser(user.data());
-            }
-        getUser();
-        }, [props.user]
-
-    )
 
     function getDiscoveredPOIS(poi) {
 
         let latitude;
         let longitude;
+        let tempPOI;
 
-        let tempPOI = props.pois.find(findPOI => findPOI.id === poi);
+        console.log(pois);
+
+        if (pois != null) {
+            tempPOI = pois.find(findPOI => findPOI.id === poi);
+        }
+
 
         return tempPOI
 
     }
 
-    return user != null && user.discovered.map(poi => {
+    return user != null && pois != null && user.discovered.map(poi => {
         let tempPOI = getDiscoveredPOIS(poi)
-        return <Marker key={poi} position={{lat: tempPOI.latitude, lng: tempPOI.longitude}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
+        console.log(tempPOI)
+        return tempPOI != null && <Marker key={poi} position={{lat: tempPOI.latitude, lng: tempPOI.longitude}} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
         <Popup>
             {tempPOI.name}<br/>
             {tempPOI.discovered}<br/>

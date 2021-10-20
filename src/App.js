@@ -29,10 +29,8 @@ function App() {
 
             <div className="App">
 
-                <h1>Welcome to the Pfyn-Finges Forest!</h1>
 
                 {/* Show role based on admin status (from custom claim) */}
-                <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
 
                 {/* Render buttons to add/remove data & log out */}
                 <div style={{display: "flex"}}>

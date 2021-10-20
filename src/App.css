@@ -1,8 +1,10 @@
 * {
   box-sizing: border-box;
-  margin: 0;
   padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
   font-family: 'PT Sans', sans-serif;
+
 }
 
 
@@ -11,28 +13,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 25px 50px 75px 100px;
 
-
-  background-size: cover;
+ /* background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
+
 }
-card{
-  padding : 10px;
-}
+
 h4{
   color: black;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
 }
+
 h1{
   text-align: center;
   padding: 40px;
 }
 .App-link {
   color: #61dafb;
-}
-NavItem{
-  padding: 10px;
-  margin: 10px;
 }
 
 

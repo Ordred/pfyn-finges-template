@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
-import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Nav, NavbarText} from "reactstrap";
+import {Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Nav, NavbarText, Button} from "reactstrap";
+import { NavLink as RRNavLink } from 'react-router-dom';
 import {firebase} from "../initFirebase";
+import {useAuth} from "../context/AuthContext";
 
 const Navigation = (props) => {
 
     const [collapsed, setCollapsed] = useState(true);
+    const {isAdmin} = useAuth();
 
     //const { isAdmin, isAuthenticated } = useAuth();
 
@@ -28,19 +31,19 @@ const Navigation = (props) => {
                 <Collapse isOpen={!collapsed} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                            <NavLink href="/map/walk-history">Map Walk History</NavLink>
+                            <NavLink to="/map/walk-history" activeClassName="active" tag={RRNavLink}>Map Walk History</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/map/discovered-points-of-interest">Point of interest</NavLink>
+                            <NavLink to="/map/discovered-points-of-interest" tag={RRNavLink}>Point of interest</NavLink>
                         </NavItem>
 
                     </Nav>
 
 
                 </Collapse>
-                <NavLink href="https://example.org">Admin</NavLink>
+                <NavLink href="https://example.org">{isAdmin ? "Admin" : "user"}</NavLink>
                 <NavbarText>
-                    <button onClick={signOut}>Logout</button>
+                    <Button onClick={signOut} outline color="secondary">Logout</Button>{' '}
                 </NavbarText>
             </Navbar>
         </div>

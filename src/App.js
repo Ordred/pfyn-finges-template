@@ -18,6 +18,7 @@ import AddPointOfInterest from "./pages/AddPointOfInterest";
 import Navigation from "./components/Nav";
 
 import DiscoveredPointsOfInterest from "./pages/DiscoveredPointsOfInterest";
+import {Container} from "reactstrap";
 
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
@@ -35,18 +36,6 @@ function App() {
             <Container>
                 <h1>{t('welcome_to_forest_finges')}</h1>
 
-                {/* Render buttons to add/remove data & log out */}
-                <div style={{display: "flex"}}>
-                    {/* Admin-only tasks */}
-                    {isAdmin && (
-                        <>
-                            <LinkButton to="/admin/code/generation">{t('generate_a_qr_code')}</LinkButton>
-                            <LinkButton to="/admin/poi/add">{t('create_poi')}</LinkButton>
-                        </>
-                    )}
-
-                </div>
-
                 <Switch>
                     <AdminRoute path="/admin/code/generation" component={QrCodeGenerationPage}/>
 
@@ -63,11 +52,6 @@ function App() {
                         <Redirect to="/map/walk-history"/>
                     </AuthenticatedRoute>
                 </Switch>
-
-                {/* Render the collection of POIs from the DB */}
-                {/*<h4>POIs Collection</h4>*/}
-                {/*<code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>*/}
-
             </Container>
         </div>
     );

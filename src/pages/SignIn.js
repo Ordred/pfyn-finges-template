@@ -34,9 +34,9 @@ const uiConfig = {
 
 export default function SignIn() {
   return (
-    <div className="App">
-      <h4>Sign in </h4>
+    <>
+      <h4 style={{textAlign: "center"}}>Sign in</h4>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-    </div>
+    </>
   );
 }

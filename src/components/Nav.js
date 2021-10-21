@@ -45,8 +45,6 @@ const Navigation = (props) => {
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
 
-    //const { isAdmin, isAuthenticated } = useAuth();
-
     // Log out of the application
     const signOut = async () => {
         try {
@@ -62,20 +60,16 @@ const Navigation = (props) => {
     return (
         <div>
             <Navbar color="light" light expand="md" >
-                <NavbarBrand href="/" className="mr-auto">Finges</NavbarBrand>
-                <NavbarToggler onClick={toggleNavbar} className="mr-2"/>
-                <Collapse isOpen={!collapsed} navbar>
-                    <Nav className="mr-auto" navbar>
+                <NavbarBrand href="/">Finges</NavbarBrand>
+                <NavbarToggler onClick={toggleNavbar}/>
 
+                <Collapse isOpen={!collapsed} navbar>
+                    <Nav navbar style={{marginRight: "auto"}}>
                         <NavItem>
                             <NavLink href="/map/walk-history">{t('walk_history')}</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink href="/map/discovered-points-of-interest">{t('poi')}</NavLink>
-                        </NavItem>
-
-                        <NavItem>
-
                         </NavItem>
 
                         <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="right">
@@ -93,9 +87,7 @@ const Navigation = (props) => {
 
                                         {name}
                                     </DropdownItem>
-                                )};
-
-
+                                )}
                             </DropdownMenu>
                         </Dropdown>
                         {/*<NavItem>*/}
@@ -104,14 +96,16 @@ const Navigation = (props) => {
                         {/*</NavItem>*/}
 
                         <NavItem>
-
-                            <NavLink onClick={signOut} className="mr-auto" navbar>{t('logout')}</NavLink>
+                            <NavLink onClick={signOut}>{t('logout')}</NavLink>
                         </NavItem>
                     </Nav>
 
-
+                    <Nav navbar>
+                        <NavItem>
+                            <NavLink href="/map/walk-history">{t('walk_history')}</NavLink>
+                        </NavItem>
+                    </Nav>
                 </Collapse>
-
             </Navbar>
         </div>
     );

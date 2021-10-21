@@ -34,19 +34,9 @@ const uiConfig = {
 
 export default function SignIn() {
   return (
-
-      <div className="App" style={{ backgroundImage: 'url("/imageFondLogin.jpg")'}} >
-
-      <h1>Welcome to the Finges trip 2021</h1>
-
-        <Card >
-          <h4>Sign in </h4>
-            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-        </Card>
-
-
+    <div className="App">
+      <h4>Sign in </h4>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
-
-
   );
 }

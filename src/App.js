@@ -1,15 +1,12 @@
 import "./App.css";
 import 'leaflet/dist/leaflet.css'
 
-import {firebase} from "./initFirebase";
 import {useAuth} from "./context/AuthContext";
 import React from 'react'
 import {Switch, Redirect} from 'react-router-dom';
 
-import i18n from "i18next";
-import {useTranslation, initReactI18next} from "react-i18next";
-import LanguageDetector from 'i18next-browser-languagedetector'
-import HttpApi from 'i18next-http-backend';
+import {useTranslation} from "react-i18next";
+import "./context/Translation";
 
 import CodeActivationPage from "./pages/CodeActivationPage";
 import QrCodeGenerationPage from "./pages/QrCodeGeneration";
@@ -30,15 +27,6 @@ function App() {
     const {t} = useTranslation();
     // Get authenticated state using the custom "auth" hook
     const {isAdmin, isAuthenticated} = useAuth();
-
-    // Log out of the application
-    const signOut = async () => {
-        try {
-            await firebase.auth().signOut();
-        } catch (e) {
-            console.error(e);
-        }
-    };
 
     // Normal rendering of the app for authenticated users
     return (

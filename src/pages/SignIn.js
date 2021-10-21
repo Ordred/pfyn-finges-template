@@ -2,9 +2,6 @@
 import { firebase } from "../initFirebase";
 import { StyledFirebaseAuth } from "react-firebaseui";
 import {COLLECTION_USERS} from "../App";
-import {
-  Card,
-} from "reactstrap";
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.

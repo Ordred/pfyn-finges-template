@@ -61,7 +61,7 @@ const Navigation = (props) => {
         <div>
             <Navbar color="light" light expand="md" >
                 {/* TODO: Rendre le lien cliquable **sans** qu'il rafraîchisse la page */}
-                <NavbarBrand style={{marginLeft: "1rem"}} href="/">Finges</NavbarBrand>
+                <NavbarBrand style={{marginLeft: "1rem"}} href="/">{t('pfywald')}</NavbarBrand>
 
                 <NavbarToggler onClick={toggleNavbar}/>
 

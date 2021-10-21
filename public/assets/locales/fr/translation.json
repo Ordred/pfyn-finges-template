@@ -1,12 +1,13 @@
 {
+  "pfywald": "Forêt de Finges",
   "welcome_to_forest_finges": "Bienvenue dans la forêt de Finges",
   "role": "Votre rôle est",
   "logout": "Se déconnecter",
   "add_dummy_data": "Add Dummy Data",
   "clean_db": "Clean DB",
-  "generate_a_qr_code": "Generate a QR code for a PoI",
+  "generate_a_qr_code": "Générer un code QR pour in PI",
   "create_poi": "Create a PoI",
   "walk_history": "Historiques des marches",
-  "poi": "Point d'intérêt",
+  "poi": "Points d'intérêt découverts",
   "language": "Langue"
 }

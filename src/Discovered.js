@@ -28,8 +28,8 @@ export function DiscoveredPOIS(props) {
 
     function getDiscoveredPOIS(poi) {
 
-        let latitude;
-        let longitude;
+        // let latitude;
+        // let longitude;
 
         let tempPOI = props.pois.find(findPOI => findPOI.id === poi);
 

@@ -25,23 +25,6 @@ import DiscoveredPointsOfInterest from "./pages/DiscoveredPointsOfInterest";
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
 
-i18n
-    .use(initReactI18next)
-    .use(LanguageDetector)
-    .use(HttpApi)
-    .init({    // the translations    // (tip move them in a JSON file and import them,    // or even better, manage them via a UI: https://react.i18next.com/guides/multiple-translation-files#manage-your-translations-with-a-management-gui)
-
-        fallbackLng: 'en',
-        detection: {
-            order: ['cookie', 'htmlTag', 'localStorage', 'path', 'subdomain'],
-            caches: ['cookie'],
-        },
-        backend: {
-            loadPath: '/assets/locales/{{lng}}/translation.json',
-        },
-        react: {useSuspense: false},
-
-    });
 
 function App() {
     const {t} = useTranslation();
@@ -62,22 +45,18 @@ function App() {
         <div>
             {isAuthenticated && <Navigation/>}
             <div className="App">
-                <h1>Welcome to the Pfyn-Finges Forest!</h1>
-
-                {/* Show role based on admin status (from custom claim) */}
-                <h2>Your role is : {isAdmin ? "Admin" : "User"}</h2>
+                <h1>{t('welcome_to_forest_finges')}</h1>
 
                 {/* Render buttons to add/remove data & log out */}
                 <div style={{display: "flex"}}>
                     {/* Admin-only tasks */}
                     {isAdmin && (
                         <>
-                            <LinkButton to="/admin/code/generation">Generate a QR code for a PoI</LinkButton>
-                            <LinkButton to="/admin/poi/add">Create a PoI</LinkButton>
+                            <LinkButton to="/admin/code/generation">{t('generate_a_qr_code')}</LinkButton>
+                            <LinkButton to="/admin/poi/add">{t('create_poi')}</LinkButton>
                         </>
                     )}
 
-                    <button onClick={signOut}>Logout</button>
                 </div>
 
                 <Switch>

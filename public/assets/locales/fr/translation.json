@@ -6,5 +6,7 @@
   "clean_db": "Clean DB",
   "generate_a_qr_code": "Generate a QR code for a PoI",
   "create_poi": "Create a PoI",
-  "test": "test1234"
+  "walk_history": "Historiques des marches",
+  "poi": "Point d'intérêt",
+  "language": "Langue"
 }

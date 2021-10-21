@@ -32,7 +32,7 @@ function App() {
     return (
         <div>
             {isAuthenticated && <Navigation/>}
-            <div className="App">
+            <Container>
                 <h1>{t('welcome_to_forest_finges')}</h1>
 
                 {/* Render buttons to add/remove data & log out */}
@@ -68,7 +68,7 @@ function App() {
                 {/*<h4>POIs Collection</h4>*/}
                 {/*<code style={{ margin: "1em", textAlign: 'left' }}><pre>{JSON.stringify(poisCollection, null, 2)}</pre></code>*/}
 
-            </div>
+            </Container>
         </div>
     );
 }

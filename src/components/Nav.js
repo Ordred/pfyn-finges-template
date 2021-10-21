@@ -6,16 +6,16 @@ import {
     NavbarBrand,
     NavbarToggler,
     NavItem,
-    NavLink,
+    NavLink as BootstrapNavLink,
     Nav,
-    NavbarText,
     Dropdown,
-    DropdownToggle, DropdownMenu, DropdownItem, Button
+    DropdownToggle, DropdownMenu, DropdownItem,
 } from "reactstrap";
 import {firebase} from "../initFirebase";
 import i18next from "i18next";
 import {useAuth} from "../context/AuthContext";
 import {useTranslation} from "react-i18next";
+import {NavLink as RouterNavLink} from "react-router-dom";
 
 const Navigation = (props) => {
     // const GlobeIcon = ({width = 20, height = 20}) => (
@@ -60,57 +60,51 @@ const Navigation = (props) => {
     return (
         <div>
             <Navbar color="light" light expand="md" >
-                <NavbarBrand href="/">Finges</NavbarBrand>
+                {/* TODO: Rendre le lien cliquable **sans** qu'il rafraîchisse la page */}
+                <NavbarBrand style={{marginLeft: "1rem"}} href="/">Finges</NavbarBrand>
+
                 <NavbarToggler onClick={toggleNavbar}/>
 
-                <Collapse isOpen={!collapsed} navbar>
+                <Collapse isOpen={!collapsed} navbar  style={{marginLeft: "1rem"}}>
                     <Nav navbar style={{marginRight: "auto"}}>
+                        {/*
+                            TODO: Faire de <RouterNavLink> (alias à l'import) de React-router un HoC (Higher Order Component) autour du NavLink de Reactstrap.
+                             Regarder comment est fait AuthenticatedRoute qui est un HoC. Ce HoC pourrait s'appeler "RoutedNavlink" ou quelque chose du genre
+                        */}
                         <NavItem>
-                            <NavLink href="/map/walk-history">{t('walk_history')}</NavLink>
+                            <RouterNavLink className="nav-link" to="/map/walk-history">{t('walk_history')}</RouterNavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/map/discovered-points-of-interest">{t('poi')}</NavLink>
+                            <RouterNavLink className="nav-link" to="/map/discovered-points-of-interest">{t('poi')}</RouterNavLink>
                         </NavItem>
+                    </Nav>
 
-                        <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="right">
+                    <Nav navbar>
+                        {/* TODO: Insérer les liens d'administration avec du *conditional rendering* et le HoC décrit au dessus */}
+
+                        <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
                             <DropdownToggle className="nav-link" color="light" caret >
                                 {t('language')}
                             </DropdownToggle>
 
                             <DropdownMenu container="body">
                                 {languages.map(({code, name, country_code}) =>
-                                    <DropdownItem>
-                                        <span key={country_code}
-                                                className={`flag-icon flag-icon-${country_code}  mx-2`}
-                                                onClick={() => i18next.changeLanguage(code)}>
-                                        </span>
-
+                                    <DropdownItem onClick={() => i18next.changeLanguage(code)} key={country_code}>
+                                        <span key={country_code} className={`flag-icon flag-icon-${country_code}  mx-2`}/>
                                         {name}
                                     </DropdownItem>
                                 )}
                             </DropdownMenu>
                         </Dropdown>
-                        {/*<NavItem>*/}
-                        {/*    <NavLink href="https://example.org" className="mr-auto">{isAdmin ? "Admin" : "User"}*/}
-                        {/*    </NavLink>*/}
-                        {/*</NavItem>*/}
 
                         <NavItem>
-                            <NavLink onClick={signOut}>{t('logout')}</NavLink>
-                        </NavItem>
-                    </Nav>
-
-                    <Nav navbar>
-                        <NavItem>
-                            <NavLink href="/map/walk-history">{t('walk_history')}</NavLink>
+                            <BootstrapNavLink onClick={signOut}>{t('logout')}</BootstrapNavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
             </Navbar>
         </div>
     );
-
-
 }
 
 export default Navigation;

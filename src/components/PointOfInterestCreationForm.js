@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import React, {useState} from 'react'
 import {COLLECTION_POIS} from "../App";
 import {firebase} from "../initFirebase";
+import {Button, Form, FormGroup, Input, Label} from "reactstrap";
 
 const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
 
@@ -36,33 +37,26 @@ export function PointOfInterestCreationForm(props) {
 
     return (
 
-        <form onSubmit={savePointOfInterest} className="addPOI">
-            <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Name"
-                value={newPOI.name}
-                onChange={handleFormInputChange}
-            />
-            <input
-                type="text"
-                id="description"
-                name="description"
-                placeholder="Description"
-                value={newPOI.description}
-                onChange={handleFormInputChange}
-            />
-            <input
-                type="text"
-                id="url"
-                name="url"
-                placeholder="QR-Code URL"
-                value={newPOI.url}
-                onChange={handleFormInputChange}
-            />
-            <button type="submit">Save point of interest</button>
-        </form>
+        <Form onSubmit={savePointOfInterest}>
+            <FormGroup>
+                <Label for="name">Point of interest name</Label>
+                <Input type="text" id="name" name="name" placeholder="Name" value={newPOI.name} onChange={handleFormInputChange} />
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="description">Point of interest description</Label>
+                <Input type="textarea" id="description" name="description" rows="4" placeholder="Description" value={newPOI.description} onChange={handleFormInputChange}/>
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="url">QR Code URL</Label>
+                <Input type="url" id="url" name="url" placeholder="QR-Code URL" value={newPOI.url} onChange={handleFormInputChange}/>
+            </FormGroup>
+
+            <p>
+                <Button type="submit" color="primary" style={{marginTop: '1rem'}}>Save point of interest</Button>
+            </p>
+        </Form>
     )
 }
 

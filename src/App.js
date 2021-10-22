@@ -11,7 +11,6 @@ import "./context/Translation";
 import CodeActivationPage from "./pages/CodeActivationPage";
 import QrCodeGenerationPage from "./pages/QrCodeGeneration";
 import WalkHistory from "./pages/WalkHistory";
-import LinkButton from "./components/LinkButton";
 import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AddPointOfInterest from "./pages/AddPointOfInterest";
@@ -27,7 +26,7 @@ export const COLLECTION_USERS = "users";
 function App() {
     const {t} = useTranslation();
     // Get authenticated state using the custom "auth" hook
-    const {isAdmin, isAuthenticated} = useAuth();
+    const {isAuthenticated} = useAuth();
 
     // Normal rendering of the app for authenticated users
     return (

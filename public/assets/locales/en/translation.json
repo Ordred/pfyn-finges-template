@@ -1,0 +1,14 @@
+{
+  "pfywald": "Pfywald",
+  "welcome_to_forest_finges": "Welcome to the Pfyn-Finges Forest!",
+  "role": "Your role is",
+  "logout": "Logout",
+  "add_dummy_data": "Add Dummy Data",
+  "clean_db": "Clean DB",
+  "generate_a_qr_code": "Generate a QR code for a PoI",
+  "create_poi": "Create a PoI",
+  "walk_history": "Walk history",
+  "poi": "Discovered points of interest",
+  "language": "Language"
+
+}

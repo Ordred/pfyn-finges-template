@@ -6,6 +6,7 @@ import {MapComponent} from "../components/Map";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import useUserData from "../hooks/useUserData";
+import {Row, Col} from 'reactstrap';
 
 
 export default function WalkHistory(props) {
@@ -57,12 +58,16 @@ export default function WalkHistory(props) {
     }
 
     return (
-        <>
-            <MapComponent>
-                {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'red'}} positions={trackCoordinates}/>}
-            </MapComponent>
+        <Row>
+            <Col sm="12" md="4" lg="3">
+                {gpxFilesList}
+            </Col>
 
-            {gpxFilesList}
-        </>
+            <Col sm="12" md="8" lg="9">
+                <MapComponent>
+                    {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'red'}} positions={trackCoordinates}/>}
+                </MapComponent>
+            </Col>
+        </Row>
     )
 }

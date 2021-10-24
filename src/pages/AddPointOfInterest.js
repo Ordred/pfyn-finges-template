@@ -5,24 +5,30 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import React, {useState} from "react";
 import {Icon} from "leaflet";
 import usePoiCollection from "../hooks/usePoiCollection";
+import {Row, Col} from "reactstrap";
 
 export default function AddPointOfInterest() {
     const [position, setPosition] = useState(null);
     let poisCollection = usePoiCollection();
 
     return (
-        <>
+        <Row>
+            <Col sm="12" lg="3">
             <PointOfInterestCreationForm position={position} setCreationPositionCallback={setPosition}/>
-            <MapComponent>
-                {poisCollection && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
-                {position &&
-                    <Popup position={position}>
-                        <p>Longitude: {position.lng.toFixed(5)}, Latitude: {position.lat.toFixed(5)}</p>
-                    </Popup>
-                }
-                <MarkerCreation setPositionCallback={setPosition}/>
-            </MapComponent>
-        </>
+            </Col>
+
+            <Col sm="12" lg="9">
+                <MapComponent>
+                    {poisCollection && poisCollection.map(coordinate => <PointOfInterest key={coordinate.id} {...coordinate}/>)}
+                    {position &&
+                        <Popup position={position}>
+                            <p>Longitude: {position.lng.toFixed(5)}, Latitude: {position.lat.toFixed(5)}</p>
+                        </Popup>
+                    }
+                    <MarkerCreation setPositionCallback={setPosition}/>
+                </MapComponent>
+            </Col>
+        </Row>
     )
 }
 

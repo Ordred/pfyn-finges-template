@@ -2,6 +2,7 @@ import {firebase} from '../initFirebase';
 import {useEffect, useState} from "react";
 import {COLLECTION_POIS, COLLECTION_USERS} from "../App";
 import {firebaseDocIntoPoiObject} from "../hooks/usePoiCollection";
+import {Alert} from "reactstrap";
 
 export default function CodeActivationPage(props) {
     // Unauthenticated users are kept from executing this component by the AuthenticatedRoute HoC
@@ -84,15 +85,15 @@ export default function CodeActivationPage(props) {
 
     if (redirectUrl === null){
         if (loadError !== null){
-            return <p>Failed to load point of interest: {loadError}</p>
+            return <Alert color="danger">Failed to load point of interest: {loadError}</Alert>
         }
 
-        return <p>Loading point of interest with code {code}</p>;
+        return <Alert color="secondary">Loading point of interest with code {code}</Alert>;
     } else {
         window.location.replace(redirectUrl);
 
-        return <p>
+        return <Alert color="success">
             Redirecting to multi-media content. <a href={redirectUrl}>Click here</a> if you are not redirected.
-        </p>
+        </Alert>
     }
 }

@@ -3,7 +3,6 @@ import 'flag-icon-css/css/flag-icon.min.css'
 import {
     Collapse,
     Navbar,
-    NavbarBrand,
     NavbarToggler,
     NavItem,
     NavLink as BootstrapNavLink,
@@ -15,7 +14,8 @@ import {firebase} from "../initFirebase";
 import i18next from "i18next";
 import {useAuth} from "../context/AuthContext";
 import {useTranslation} from "react-i18next";
-import {NavLink as RouterNavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
+import RoutedNavLink from "./RoutedNavLink";
 
 const Navigation = (props) => {
     // const GlobeIcon = ({width = 20, height = 20}) => (
@@ -40,7 +40,7 @@ const Navigation = (props) => {
     ]
     const [collapsed, setCollapsed] = useState(true);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const {isAdmin, isAuthenticated} = useAuth();
+    const {isAdmin} = useAuth();
     const {t} = useTranslation();
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
@@ -60,28 +60,24 @@ const Navigation = (props) => {
     return (
         <div>
             <Navbar color="light" light expand="md" >
-                {/* TODO: Rendre le lien cliquable **sans** qu'il rafraîchisse la page */}
-                <NavbarBrand style={{marginLeft: "1rem"}} href="/">{t('pfywald')}</NavbarBrand>
+                <Link style={{marginLeft: "1rem"}}  to="/" className="navbar-brand">{t('pfywald')}</Link>
 
                 <NavbarToggler onClick={toggleNavbar}/>
 
                 <Collapse isOpen={!collapsed} navbar  style={{marginLeft: "1rem"}}>
                     <Nav navbar style={{marginRight: "auto"}}>
-                        {/*
-                            TODO: Faire de <RouterNavLink> (alias à l'import) de React-router un HoC (Higher Order Component) autour du NavLink de Reactstrap.
-                             Regarder comment est fait AuthenticatedRoute qui est un HoC. Ce HoC pourrait s'appeler "RoutedNavlink" ou quelque chose du genre
-                        */}
-                        <NavItem>
-                            <RouterNavLink className="nav-link" to="/map/walk-history">{t('walk_history')}</RouterNavLink>
-                        </NavItem>
-                        <NavItem>
-                            <RouterNavLink className="nav-link" to="/map/discovered-points-of-interest">{t('poi')}</RouterNavLink>
-                        </NavItem>
+                        <RoutedNavLink to="/map/walk-history">{t('walk_history')}</RoutedNavLink>
+                        <RoutedNavLink to="/map/discovered-points-of-interest">{t('poi')} </RoutedNavLink>
                     </Nav>
 
                     <Nav navbar>
-                        {/* TODO: Insérer les liens d'administration avec du *conditional rendering* et le HoC décrit au dessus */}
-
+                        {
+                            isAdmin &&
+                                <>
+                                    <RoutedNavLink to="/admin/code/generation">{t('code_generation')}</RoutedNavLink>
+                                    <RoutedNavLink to="/admin/poi/add">{t('add_poi')}</RoutedNavLink>
+                                </>
+                        }
                         <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
                             <DropdownToggle className="nav-link" color="light" caret >
                                 {t('language')}

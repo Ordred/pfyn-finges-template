@@ -3,6 +3,7 @@ import {useState} from "react";
 import {QrCode} from "../components/QrCode";
 import usePoiCollection from "../hooks/usePoiCollection";
 import {Alert, Col, FormGroup, Input, Label, Row} from "reactstrap";
+import {Translation, useTranslation} from "react-i18next";
 
 export default function QrCodeGenerationPage() {
     function handlePoiButtonClick(e){
@@ -18,28 +19,30 @@ export default function QrCodeGenerationPage() {
     const poisCollection = usePoiCollection();
     const [currentPoiCode, setCurrentPoiCode] = useState("0");
 
+    const {t} = useTranslation();
+
     let poisListForm = null;
 
     if(poisCollection !== null){
         if(poisCollection.length === 0){
-            poisListForm = <Alert color="warning">No points of interest in the database</Alert>;
+            poisListForm = <Alert color="warning">{t('no_poi')}</Alert>;
         } else {
             poisListForm = (
                 <>
                     <FormGroup>
-                        <Label for="poi-select">Point of interest</Label>
+                        <Label for="poi-select"></Label>
                         <Input type="select" id="poi-select" onChange={handlePoiButtonClick} value={currentPoiCode}>
-                            <option disabled value="0">Select the point of interest</option>
+                            <option disabled value="0">{t('select_poi')}</option>
                             <option disabled>----------</option>
                             {poisCollection.map(poi => (<option key={poi.id} value={poi.id}>{poi.name}</option>))}
                         </Input>
                     </FormGroup>
 
                     { currentPoiCode !== "0" &&
-                        <>
-                            <h2 style={{marginTop: '1rem'}}>Description of the point of interest</h2>
-                            <p>{poisCollection.find(p => p.id === currentPoiCode).description}</p>
-                        </>
+                    <>
+                        <h2 style={{marginTop: '1rem'}}>{t('description_poi')}</h2>
+                        <p>{poisCollection.find(p => p.id === currentPoiCode).description}</p>
+                    </>
                     }
                 </>
             )
@@ -48,15 +51,15 @@ export default function QrCodeGenerationPage() {
 
     return (
         <>
-            <h2>QR Code generation</h2>
+            <h2>{t('qr_code_generation')}</h2>
 
             <Row>
                 <Col sm="12" md="6">
-                    <h3>List of points of interests</h3>
+                    <h3>{t('list_poi')}</h3>
                     {poisListForm}
                 </Col>
                 <Col sm="12" md="6">
-                    <h3>Generated QR code</h3>
+                    <h3>{t('generated_qr_code')}</h3>
                     { currentPoiCode && <QrCode url={`${process.env.REACT_APP_APPLICATION_BASE_URL}/code/${currentPoiCode}`}/>}
                 </Col>
             </Row>

@@ -9,5 +9,14 @@
   "create_poi": "Create a PoI",
   "walk_history": "Historiques des marches",
   "poi": "Points d'intérêt découverts",
-  "language": "Langue"
+  "language": "Langue",
+  "select_poi": "Selectionner un point d'intérêt",
+  "no_poi": "Pas de point d'intérêt dans la base de donnée",
+  "qr_code_generation": "Générer un QR code",
+  "list_poi": "Liste de points d'intérêt",
+  "generated_qr_code": "QR code généré",
+  "poi_name": "Nom du point d'intérêt",
+  "poi_description": "Description du point d'intérêt",
+  "qr_code_url": "QR Code URL",
+  "save_poi": "Sauvegarder POI"
 }

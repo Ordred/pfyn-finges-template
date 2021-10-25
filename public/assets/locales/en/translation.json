@@ -9,6 +9,14 @@
   "create_poi": "Create a PoI",
   "walk_history": "Walk history",
   "poi": "Discovered points of interest",
-  "language": "Language"
-
+  "language": "Language",
+  "select_poi": "Select the point of interest",
+  "no_poi": "No points of interest in the database",
+  "qr_code_generation": "QR Code generation",
+  "list_poi": "List of points of interests",
+  "generated_qr_code": "Generated QR code",
+  "poi_name": "Point of interest name",
+  "poi_description": "Point of interest description",
+  "qr_code_url": "QR Code URL",
+  "save_poi": "Save POI"
 }

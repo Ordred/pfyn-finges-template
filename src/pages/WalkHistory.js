@@ -1,7 +1,7 @@
 import {firebase} from "../initFirebase";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {Polyline} from "react-leaflet";
+import {Polyline, useMap} from "react-leaflet";
 import {MapComponent} from "../components/Map";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
@@ -66,8 +66,21 @@ export default function WalkHistory(props) {
             <Col sm="12" md="8" lg="9">
                 <MapComponent>
                     {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'red'}} positions={trackCoordinates}/>}
+                    <WalkWaypointCenterer position={trackCoordinates && trackCoordinates.length > 0 && trackCoordinates[0]}/>
                 </MapComponent>
             </Col>
         </Row>
     )
+}
+
+function WalkWaypointCenterer({position}) {
+    const map = useMap();
+
+    if(!position){
+        return null;
+    }
+
+    map.panTo(position);
+
+    return null;
 }

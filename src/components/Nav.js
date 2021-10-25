@@ -68,16 +68,17 @@ const Navigation = (props) => {
                     <Nav navbar style={{marginRight: "auto"}}>
                         <RoutedNavLink to="/map/walk-history">{t('walk_history')}</RoutedNavLink>
                         <RoutedNavLink to="/map/discovered-points-of-interest">{t('poi')} </RoutedNavLink>
+                        {
+                            isAdmin &&
+                            <>
+                                <RoutedNavLink to="/admin/code/generation">{t('code_generation')}</RoutedNavLink>
+                                <RoutedNavLink to="/admin/poi/add">{t('add_poi')}</RoutedNavLink>
+                            </>
+                        }
                     </Nav>
 
                     <Nav navbar>
-                        {
-                            isAdmin &&
-                                <>
-                                    <RoutedNavLink to="/admin/code/generation">{t('code_generation')}</RoutedNavLink>
-                                    <RoutedNavLink to="/admin/poi/add">{t('add_poi')}</RoutedNavLink>
-                                </>
-                        }
+
                         <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
                             <DropdownToggle className="nav-link" color="light" caret >
                                 {t('language')}

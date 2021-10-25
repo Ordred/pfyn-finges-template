@@ -18,5 +18,7 @@
   "poi_name": "Nom du point d'intérêt",
   "poi_description": "Description du point d'intérêt",
   "qr_code_url": "QR Code URL",
-  "save_poi": "Sauvegarder POI"
+  "save_poi": "Sauvegarder POI",
+  "add_poi": "Ajout du POI",
+  "code_generation": "Generation de code"
 }

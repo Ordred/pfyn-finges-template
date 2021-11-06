@@ -16,6 +16,7 @@ import {useAuth} from "../context/AuthContext";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import RoutedNavLink from "./RoutedNavLink";
+import {useTheme} from "../context/ThemeContext";
 
 const Navigation = (props) => {
     // const GlobeIcon = ({width = 20, height = 20}) => (
@@ -42,6 +43,7 @@ const Navigation = (props) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const {isAdmin} = useAuth();
     const {t} = useTranslation();
+    const {theme, switchTheme} = useTheme();
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
 
@@ -57,9 +59,14 @@ const Navigation = (props) => {
 
     const toggleNavbar = () => setCollapsed(!collapsed);
 
+    const toggleTheme = (e) => {
+        e.preventDefault();
+        switchTheme(theme === 'light' ? 'dark' : 'light')
+    }
+
     return (
         <div>
-            <Navbar color="light" light expand="md" >
+            <Navbar {...{[theme]: true}} color={theme} expand="md" >
                 <Link style={{marginLeft: "1rem"}}  to="/" className="navbar-brand">{t('pfywald')}</Link>
 
                 <NavbarToggler onClick={toggleNavbar}/>
@@ -80,7 +87,7 @@ const Navigation = (props) => {
                     <Nav navbar>
 
                         <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
-                            <DropdownToggle className="nav-link" color="light" caret >
+                            <DropdownToggle className="nav-link" {...{[theme]: true}} color={theme} caret >
                                 {t('language')}
                             </DropdownToggle>
 
@@ -93,6 +100,10 @@ const Navigation = (props) => {
                                 )}
                             </DropdownMenu>
                         </Dropdown>
+
+                        <NavItem>
+                            <BootstrapNavLink onClick={toggleTheme}>{theme}</BootstrapNavLink>
+                        </NavItem>
 
                         <NavItem>
                             <BootstrapNavLink onClick={signOut}>{t('logout')}</BootstrapNavLink>

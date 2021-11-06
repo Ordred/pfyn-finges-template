@@ -3,7 +3,6 @@ import 'flag-icon-css/css/flag-icon.min.css'
 import {
     Collapse,
     Navbar,
-    NavbarBrand,
     NavbarToggler,
     NavItem,
     NavLink as BootstrapNavLink,
@@ -15,6 +14,7 @@ import {firebase} from "../initFirebase";
 import i18next from "i18next";
 import {useAuth} from "../context/AuthContext";
 import {useTranslation} from "react-i18next";
+import {Link} from "react-router-dom";
 import RoutedNavLink from "./RoutedNavLink";
 
 const Navigation = (props) => {
@@ -40,7 +40,7 @@ const Navigation = (props) => {
     ]
     const [collapsed, setCollapsed] = useState(true);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const {isAdmin, isAuthenticated} = useAuth();
+    const {isAdmin} = useAuth();
     const {t} = useTranslation();
 
     const toggle = () => setDropdownOpen(prevState => !prevState);
@@ -59,9 +59,8 @@ const Navigation = (props) => {
 
     return (
         <div>
-            <Navbar light expand="md" >
-                {/* TODO: Rendre le lien cliquable **sans** qu'il rafraîchisse la page */}
-                <NavbarBrand style={{marginLeft: "1rem"}} href="/">{t('pfywald')}</NavbarBrand>
+            <Navbar color="light" light expand="md" >
+                <Link style={{marginLeft: "1rem"}}  to="/" className="navbar-brand">{t('pfywald')}</Link>
 
                 <NavbarToggler onClick={toggleNavbar}/>
 
@@ -79,6 +78,7 @@ const Navigation = (props) => {
                     </Nav>
 
                     <Nav navbar>
+
                         <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="down">
                             <DropdownToggle className="nav-link" color="light" caret >
                                 {t('language')}

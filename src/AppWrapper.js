@@ -1,13 +1,16 @@
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import {BrowserRouter} from "react-router-dom";
+import {ThemeProvider} from "./context/ThemeContext";
 
 export default function AppWrapper() {
   return (
     <AuthProvider>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <ThemeProvider>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </ThemeProvider>
     </AuthProvider>
   );
 }

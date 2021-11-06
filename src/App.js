@@ -18,6 +18,7 @@ import Navigation from "./components/Nav";
 
 import DiscoveredPointsOfInterest from "./pages/DiscoveredPointsOfInterest";
 import {Container} from "reactstrap";
+import {THEME_COLORS, useTheme} from "./context/ThemeContext";
 
 export const COLLECTION_POIS = "pois";
 export const COLLECTION_USERS = "users";
@@ -27,12 +28,13 @@ function App() {
     const {t} = useTranslation();
     // Get authenticated state using the custom "auth" hook
     const {isAuthenticated} = useAuth();
+    const {theme} = useTheme();
 
     // Normal rendering of the app for authenticated users
     return (
         <div>
             {isAuthenticated && <Navigation/>}
-            <Container>
+            <Container style={{backgroundColor: THEME_COLORS[theme].background, color: THEME_COLORS[theme].foreground}}>
                 <h1>{t('welcome_to_forest_finges')}</h1>
 
                 <Switch>

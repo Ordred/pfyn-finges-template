@@ -3,7 +3,7 @@ import {useState} from "react";
 import {QrCode} from "../components/QrCode";
 import usePoiCollection from "../hooks/usePoiCollection";
 import {Alert, Col, FormGroup, Input, Label, Row} from "reactstrap";
-import {Translation, useTranslation} from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 export default function QrCodeGenerationPage() {
     function handlePoiButtonClick(e){

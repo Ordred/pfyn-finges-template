@@ -7,6 +7,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/*
+  This rule exists to make sure that the entire background of the page will be
+  stylized with the corresponding colors. Since pages may not have enough height
+  by themselves, we force the main application element to take the entire viewport
+  height (vh).
+*/
+.application-container {
+  min-height: 100vh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

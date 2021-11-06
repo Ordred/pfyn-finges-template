@@ -32,9 +32,9 @@ function App() {
 
     // Normal rendering of the app for authenticated users
     return (
-        <div>
+        <div className="application-container" style={{backgroundColor: THEME_COLORS[theme].background, color: THEME_COLORS[theme].foreground}}>
             {isAuthenticated && <Navigation/>}
-            <Container style={{backgroundColor: THEME_COLORS[theme].background, color: THEME_COLORS[theme].foreground}}>
+            <Container>
                 <h1>{t('welcome_to_forest_finges')}</h1>
 
                 <Switch>

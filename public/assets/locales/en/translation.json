@@ -20,5 +20,7 @@
   "qr_code_url": "QR Code URL",
   "save_poi": "Save POI",
   "add_poi": "Add POI",
-  "code_generation": "Code Generation"
+  "code_generation": "Code Generation",
+  "navbar_set_light": "Enable light theme",
+  "navbar_set_dark": "Enable dark theme"
 }

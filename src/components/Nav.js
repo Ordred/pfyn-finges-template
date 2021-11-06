@@ -102,7 +102,7 @@ const Navigation = (props) => {
                         </Dropdown>
 
                         <NavItem>
-                            <BootstrapNavLink onClick={toggleTheme}>{theme}</BootstrapNavLink>
+                            <BootstrapNavLink onClick={toggleTheme}>{t('navbar_set_' + (theme === 'light' ? 'dark' : 'light'))}</BootstrapNavLink>
                         </NavItem>
 
                         <NavItem>

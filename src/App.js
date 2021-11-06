@@ -14,7 +14,7 @@ import WalkHistory from "./pages/WalkHistory";
 import AuthenticatedRoute from "./components/UserAuthenticatedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AddPointOfInterest from "./pages/AddPointOfInterest";
-import Navigation from "./components/Nav";
+import Navigation from "./components/Navigation";
 
 import DiscoveredPointsOfInterest from "./pages/DiscoveredPointsOfInterest";
 import {Container} from "reactstrap";

@@ -1,6 +1,9 @@
 import React, {useContext, useState} from "react";
 
 const DEFAULT_THEME = 'light';
+
+// Yes, this could use a few more attributes to "classify" the different color scheme, typically to use with elements
+// taking a boolean to decide on which color scheme to apply. This is sufficient for now.
 export const THEME_COLORS = {
     light: {
         foreground: 'inherit',

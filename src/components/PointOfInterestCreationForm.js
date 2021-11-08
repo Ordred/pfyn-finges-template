@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import React, {useState} from 'react'
 import {COLLECTION_POIS} from "../App";
 import {firebase} from "../initFirebase";
-import {Button, Form, FormGroup, Input, Label} from "reactstrap";
+import {Alert, Button, Form, FormGroup, Input, Label} from "reactstrap";
 import {useTranslation} from "react-i18next";
 
 const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: ''}
@@ -13,11 +13,23 @@ const EMPTY_POI = {name: '', description: '', latitude: '', longitude: '', url: 
 export function PointOfInterestCreationForm(props) {
     let db = firebase.firestore();
     let [newPOI, setNewPOI] = useState(EMPTY_POI)
+    let [errorMessages, setErrorMessages] = useState([]);
 
     const {t} = useTranslation();
 
     const savePointOfInterest = async (event) => {
         event.preventDefault();
+        let messages = [];
+
+        if(props.position === null){
+            messages.push(t('poi-creation-empty-pos'))
+        }
+
+        if (messages.length > 0){
+            setErrorMessages(messages);
+            return;
+        }
+
         const poisCollection = await db.collection(COLLECTION_POIS);
 
         try {
@@ -40,24 +52,37 @@ export function PointOfInterestCreationForm(props) {
     };
 
     return (
-
         <Form onSubmit={savePointOfInterest}>
+            {errorMessages.length > 0 &&
+            <Alert color="danger">
+                {/* I would certainly used the message array index, but an UUID is fine too */}
+                <ul>{errorMessages.map(err => <li key={crypto.randomUUID()}>{err}</li>)}</ul>
+            </Alert>
+            }
+
             <FormGroup>
                 <Label for="name">{t('poi_name')}</Label>
-                <Input type="text" id="name" name="name" placeholder="Name" value={newPOI.name}
-                       onChange={handleFormInputChange}/>
+                <Input type="text" id="name" name="name" value={newPOI.name} onChange={handleFormInputChange} required/>
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="lat">Latitude</Label>
+                <Input type="text" value={props.position ? props.position.lat : ""} disabled/>
+            </FormGroup>
+
+            <FormGroup>
+                <Label for="lat">Longitude</Label>
+                <Input type="text" value={props.position ? props.position.lng : ""} disabled/>
             </FormGroup>
 
             <FormGroup>
                 <Label for="description">{t('poi_description')}</Label>
-                <Input type="textarea" id="description" name="description" rows="4" placeholder="Description"
-                       value={newPOI.description} onChange={handleFormInputChange}/>
+                <Input type="textarea" id="description" name="description" rows="4" value={newPOI.description} onChange={handleFormInputChange} required/>
             </FormGroup>
 
             <FormGroup>
                 <Label for="url">{t('qr_code_url')}</Label>
-                <Input type="url" id="url" name="url" placeholder="QR-Code URL" value={newPOI.url}
-                       onChange={handleFormInputChange}/>
+                <Input type="url" id="url" name="url" value={newPOI.url} onChange={handleFormInputChange} required/>
             </FormGroup>
 
             <p>

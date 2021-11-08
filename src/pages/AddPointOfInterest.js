@@ -5,16 +5,22 @@ import markerIconPng from "leaflet/dist/images/marker-icon.png"
 import React, {useState} from "react";
 import {Icon} from "leaflet";
 import usePoiCollection from "../hooks/usePoiCollection";
-import {Row, Col} from "reactstrap";
+import {Row, Col, Alert} from "reactstrap";
+import {useTranslation} from "react-i18next";
 
 export default function AddPointOfInterest() {
     const [position, setPosition] = useState(null);
+    const {t} = useTranslation();
     let poisCollection = usePoiCollection();
 
     return (
         <Row>
+            <Col sm="12">
+                <Alert color="info">{t('poi-creation-form-info')}</Alert>
+            </Col>
+
             <Col sm="12" lg="3">
-            <PointOfInterestCreationForm position={position} setCreationPositionCallback={setPosition}/>
+                <PointOfInterestCreationForm position={position} setCreationPositionCallback={setPosition}/>
             </Col>
 
             <Col sm="12" lg="9">

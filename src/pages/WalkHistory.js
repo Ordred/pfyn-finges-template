@@ -52,7 +52,7 @@ export default function WalkHistory(props) {
     } else {
         gpxFilesList = (
             <ul>
-                {userData.gpx_files.map((file, index) => <li key={index}><Link to={`/map/walk-history/${file}`} className="App-link">{file}</Link></li>)}
+                {userData.gpx_files.map((file) => <li key={file}><Link to={`/map/walk-history/${file}`} className="App-link">{file}</Link></li>)}
             </ul>
         )
     }

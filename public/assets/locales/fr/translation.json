@@ -21,8 +21,15 @@
   "save_poi": "Sauvegarder POI",
   "add_poi": "Ajout du POI",
   "code_generation": "Generation de code",
+
   "navbar_set_light": "Activer le thème clair",
   "navbar_set_dark": "Activer le thème sombre",
+
   "poi-creation-form-info": "Cliquez sur la carte pour définir l'emplacement du point d'intérêt à créer",
-  "poi-creation-empty-pos": "La position du nouveau point d'intérêt est obligatoire"
+  "poi-creation-empty-pos": "La position du nouveau point d'intérêt est obligatoire",
+
+  "walk-history-error": "Ne peut pas charger le fichier GPX",
+  "walk-history-human-not-found": "fichier non trouvé",
+  "walk-history-human-unauthorized": "accès refusé",
+  "walk-history-human-unknown": "raison inconnue"
 }

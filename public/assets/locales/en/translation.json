@@ -23,6 +23,12 @@
   "code_generation": "Code Generation",
   "navbar_set_light": "Enable light theme",
   "navbar_set_dark": "Enable dark theme",
+
   "poi-creation-form-info": "Click on the map to define the place where the new point of interest will be created",
-  "poi-creation-empty-pos": "The position of the new point of interest is mandatory"
+  "poi-creation-empty-pos": "The position of the new point of interest is mandatory",
+
+  "walk-history-error": "Couldn't load GPX file",
+  "walk-history-human-not-found": "file not found",
+  "walk-history-human-unauthorized": "access denied",
+  "walk-history-human-unknown": "unknown reason"
 }

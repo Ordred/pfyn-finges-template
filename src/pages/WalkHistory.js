@@ -6,7 +6,8 @@ import {MapComponent} from "../components/Map";
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import useUserData from "../hooks/useUserData";
-import {Row, Col} from 'reactstrap';
+import {Row, Col, Alert} from 'reactstrap';
+import {useTranslation} from "react-i18next";
 
 
 export default function WalkHistory(props) {
@@ -16,6 +17,8 @@ export default function WalkHistory(props) {
     let userData = useUserData(uid);
     let [firebaseGpxFilesList, setFirebaseGpxFilesList] = useState([]);
     let [trackCoordinates, setTrackCoordinates] = useState(null)
+    let [userError, setUserError] = useState(null);
+    let {t} = useTranslation();
 
     let gpxFilename = props.match.params.gpx;
 
@@ -40,7 +43,7 @@ export default function WalkHistory(props) {
 
         fetch_user_files()
 
-        // The user data is already observed for us, as an update trigger. We can't watch the storage directly
+        // The user data is already observed for us, as an update trigger. We can't watch the storage file list move directly
     }, [uid, userData?.gpx_files])
 
     useEffect(() => {
@@ -63,9 +66,29 @@ export default function WalkHistory(props) {
                 let nodes = [...parsed_doc.querySelectorAll("trkpt")];
                 let coords = nodes.map(node => [node.attributes.lat.value, node.attributes.lon.value])
                 setTrackCoordinates(coords);
+                setUserError(null);
             })
-            .catch(error => console.error("Couldn't fetch the user's GPX file", error));
-    }, [gpxFilename, uid]);
+
+            .catch(error => {
+                console.error("Couldn't fetch the user's GPX file", error)
+                let user_friendly_reason;
+
+                switch(error.code){
+                    case "storage/object-not-found":
+                        user_friendly_reason = t("walk-history-human-not-found")
+                        break;
+
+                    case "storage/unauthorized":
+                        user_friendly_reason = t("walk-history-human-unauthorized");
+                        break;
+
+                    default:
+                        user_friendly_reason = t("walk-history-human-unknown");
+                }
+
+                setUserError(`${t("walk-history-error")} ${gpxFilename}: ${user_friendly_reason}.`)
+            });
+    }, [gpxFilename, uid, t]);
 
     if(userData === null){
         return null; // Don't render anything until the user data is loaded
@@ -84,18 +107,29 @@ export default function WalkHistory(props) {
     }
 
     return (
-        <Row>
-            <Col sm="12" md="4" lg="3">
-                {gpxFilesList}
-            </Col>
+        <>
+            {
+                userError && (
+                    <Row>
+                        <Col sm="12">
+                            <Alert color="danger">{userError}</Alert>
+                        </Col>
+                    </Row>
+                )
+            }
+            <Row>
+                <Col sm="12" md="4" lg="3">
+                    {gpxFilesList}
+                </Col>
 
-            <Col sm="12" md="8" lg="9">
-                <MapComponent>
-                    {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'red'}} positions={trackCoordinates}/>}
-                    <WalkWaypointCenterer position={trackCoordinates && trackCoordinates.length > 0 && trackCoordinates[0]}/>
-                </MapComponent>
-            </Col>
-        </Row>
+                <Col sm="12" md="8" lg="9">
+                    <MapComponent>
+                        {trackCoordinates && <Polyline pathOptions={{fillColor: 'red', color: 'red'}} positions={trackCoordinates}/>}
+                        <WalkWaypointCenterer position={trackCoordinates && trackCoordinates.length > 0 && trackCoordinates[0]}/>
+                    </MapComponent>
+                </Col>
+            </Row>
+        </>
     )
 }
 

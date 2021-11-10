@@ -23,6 +23,9 @@ const uiConfig = {
         if (!userDocument.exists) {
           await userDocumentRef.set({discovered: [], gpx_files: []});
         }
+
+        // No need to handle anything in this function. The folders are created dynamically when a file is uploaded to
+        // the firebase cloud storage service
       }
 
       createUserData();

@@ -12,10 +12,36 @@ import {Row, Col} from 'reactstrap';
 export default function WalkHistory(props) {
     // Unauthenticated users are kept from executing this component by the AuthenticatedRoute HoC
 
-    let userData = useUserData(firebase.auth().currentUser.uid);
+    let uid = firebase.auth().currentUser.uid;
+    let userData = useUserData(uid);
+    let [firebaseGpxFilesList, setFirebaseGpxFilesList] = useState([]);
     let [trackCoordinates, setTrackCoordinates] = useState(null)
 
     let gpxFilename = props.match.params.gpx;
+
+    useEffect(() => {
+        const fetch_user_files = async () => {
+
+            let storage = firebase.storage();
+            let file_list_ref = storage.refFromURL(`gs://${process.env.REACT_APP_FIREBASE_STORAGE}/${uid}`);
+            let file_list = [];
+            try {
+                file_list = await file_list_ref.listAll()
+            } catch (e) {
+                // no-op
+            }
+
+            setFirebaseGpxFilesList(file_list.items.map(file_ref => file_ref.name))
+        }
+
+        if(!userData?.gpx_files){
+            return;
+        }
+
+        fetch_user_files()
+
+        // The user data is already observed for us, as an update trigger. We can't watch the storage directly
+    }, [uid, userData?.gpx_files])
 
     useEffect(() => {
         // Nothing requested ? Don't load anything then !
@@ -24,7 +50,7 @@ export default function WalkHistory(props) {
         }
 
         let storage = firebase.storage();
-        let gpxFileRef = storage.refFromURL(`gs://${process.env.REACT_APP_FIREBASE_STORAGE}/${gpxFilename}`);
+        let gpxFileRef = storage.refFromURL(`gs://${process.env.REACT_APP_FIREBASE_STORAGE}/${uid}/${gpxFilename}`);
 
         gpxFileRef.getDownloadURL()
             .then(url => fetch(url, {mode: "cors"}))
@@ -39,7 +65,7 @@ export default function WalkHistory(props) {
                 setTrackCoordinates(coords);
             })
             .catch(error => console.error("Couldn't fetch the user's GPX file", error));
-    }, [gpxFilename]);
+    }, [gpxFilename, uid]);
 
     if(userData === null){
         return null; // Don't render anything until the user data is loaded
@@ -47,12 +73,12 @@ export default function WalkHistory(props) {
 
     let gpxFilesList;
 
-    if(userData.gpx_files.length === 0) {
+    if(firebaseGpxFilesList.length === 0) {
         gpxFilesList = <p>No GPX file to explore</p>
     } else {
         gpxFilesList = (
             <ul>
-                {userData.gpx_files.map((file) => <li key={file}><Link to={`/map/walk-history/${file}`} className="App-link">{file}</Link></li>)}
+                {firebaseGpxFilesList.map((file) => <li key={file}><Link to={`/map/walk-history/${file}`} className="App-link">{file}</Link></li>)}
             </ul>
         )
     }

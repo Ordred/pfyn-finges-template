@@ -28,7 +28,7 @@
   "poi-creation-empty-pos": "The position of the new point of interest is mandatory",
 
   "walk-history-error": "Couldn't load GPX file",
-  "walk-history-human-not-found": "file not found",
-  "walk-history-human-unauthorized": "access denied",
-  "walk-history-human-unknown": "unknown reason"
+  "walk-history-human-storage/object-not-found": "file not found",
+  "walk-history-human-storage/unauthorized": "access denied",
+  "walk-history-human-storage/unknown": "unknown reason"
 }

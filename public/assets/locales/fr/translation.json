@@ -29,7 +29,7 @@
   "poi-creation-empty-pos": "La position du nouveau point d'intérêt est obligatoire",
 
   "walk-history-error": "Ne peut pas charger le fichier GPX",
-  "walk-history-human-not-found": "fichier non trouvé",
-  "walk-history-human-unauthorized": "accès refusé",
-  "walk-history-human-unknown": "raison inconnue"
+  "walk-history-human-storage/object-not-found": "fichier non trouvé",
+  "walk-history-human-storage/unauthorized": "accès refusé",
+  "walk-history-human-storage/unknown": "raison inconnue"
 }

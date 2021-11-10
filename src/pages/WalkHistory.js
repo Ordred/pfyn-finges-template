@@ -17,7 +17,7 @@ export default function WalkHistory(props) {
     let userData = useUserData(uid);
     let [firebaseGpxFilesList, setFirebaseGpxFilesList] = useState([]);
     let [trackCoordinates, setTrackCoordinates] = useState(null)
-    let [userError, setUserError] = useState(null);
+    let [fileLoadError, setFileLoadError] = useState(null);
     let {t} = useTranslation();
 
     let gpxFilename = props.match.params.gpx;
@@ -48,6 +48,9 @@ export default function WalkHistory(props) {
 
     useEffect(() => {
         // Nothing requested ? Don't load anything then !
+        setFileLoadError(null);
+        setTrackCoordinates(null);
+
         if(!gpxFilename){
             return;
         }
@@ -66,29 +69,18 @@ export default function WalkHistory(props) {
                 let nodes = [...parsed_doc.querySelectorAll("trkpt")];
                 let coords = nodes.map(node => [node.attributes.lat.value, node.attributes.lon.value])
                 setTrackCoordinates(coords);
-                setUserError(null);
+                setFileLoadError(null);
             })
 
             .catch(error => {
                 console.error("Couldn't fetch the user's GPX file", error)
-                let user_friendly_reason;
-
-                switch(error.code){
-                    case "storage/object-not-found":
-                        user_friendly_reason = t("walk-history-human-not-found")
-                        break;
-
-                    case "storage/unauthorized":
-                        user_friendly_reason = t("walk-history-human-unauthorized");
-                        break;
-
-                    default:
-                        user_friendly_reason = t("walk-history-human-unknown");
+                if(error.code === 'storage/object-not-found' || error.code === 'storage/unauthorized'){
+                    setFileLoadError(error.code)
+                } else {
+                    setFileLoadError('storage/unknown')
                 }
-
-                setUserError(`${t("walk-history-error")} ${gpxFilename}: ${user_friendly_reason}.`)
             });
-    }, [gpxFilename, uid, t]);
+    }, [gpxFilename, uid]);
 
     if(userData === null){
         return null; // Don't render anything until the user data is loaded
@@ -109,10 +101,10 @@ export default function WalkHistory(props) {
     return (
         <>
             {
-                userError && (
+                fileLoadError && (
                     <Row>
                         <Col sm="12">
-                            <Alert color="danger">{userError}</Alert>
+                            <Alert color="danger">{t("walk-history-error")} {gpxFilename}: {t(`walk-history-human-${fileLoadError}`)}.</Alert>
                         </Col>
                     </Row>
                 )

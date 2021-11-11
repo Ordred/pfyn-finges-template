@@ -40,7 +40,7 @@ export default function QrCodeGenerationPage() {
 
                     { currentPoiCode !== "0" &&
                     <>
-                        <h2 style={{marginTop: '1rem'}}>{t('description_poi')}</h2>
+                        <h2 style={{marginTop: '1rem'}}>{t('poi_description')}</h2>
                         <p>{poisCollection.find(p => p.id === currentPoiCode).description}</p>
                     </>
                     }
@@ -60,7 +60,7 @@ export default function QrCodeGenerationPage() {
                 </Col>
                 <Col sm="12" md="6">
                     <h3>{t('generated_qr_code')}</h3>
-                    { currentPoiCode && <QrCode url={`${process.env.REACT_APP_APPLICATION_BASE_URL}/code/${currentPoiCode}`}/>}
+                    { currentPoiCode !== "0" && <QrCode url={`${process.env.REACT_APP_APPLICATION_BASE_URL}/code/${currentPoiCode}`}/>}
                 </Col>
             </Row>
         </>
